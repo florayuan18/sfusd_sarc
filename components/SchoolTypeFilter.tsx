@@ -1,4 +1,4 @@
-import { SCHOOL_FILTERS } from "@/lib/school-utils";
+import { SCHOOL_FILTER_LABELS, SCHOOL_FILTERS } from "@/lib/schoolUtils";
 import { cn } from "@/lib/classNames";
 import type { SchoolCounts, SchoolFilter } from "@/types/school";
 
@@ -30,7 +30,7 @@ export function SchoolTypeFilter({
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
             )}
           >
-            {filter}
+            {SCHOOL_FILTER_LABELS[filter]}
             <span
               className={cn(
                 "ml-2 rounded-full px-2 py-0.5 text-xs",

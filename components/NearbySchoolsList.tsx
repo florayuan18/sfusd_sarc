@@ -1,6 +1,7 @@
 import type { School } from "@/types/school";
 import { cn } from "@/lib/classNames";
 import { Card } from "@/components/ui/Card";
+import { SCHOOL_TYPE_LABELS } from "@/lib/schoolUtils";
 
 type NearbySchoolsListProps = {
   schools: School[];
@@ -44,7 +45,8 @@ export function NearbySchoolsList({
                     {school.name}
                   </div>
                   <div className="mt-1 text-sm text-slate-500">
-                    {school.type} · {school.distanceMiles.toFixed(1)} miles
+                    {SCHOOL_TYPE_LABELS[school.type]} ·{" "}
+                    {school.distanceMiles.toFixed(1)} miles
                   </div>
                 </div>
                 <div className="shrink-0 rounded-full bg-white px-3 py-1 text-sm font-semibold text-slate-700 shadow-sm">

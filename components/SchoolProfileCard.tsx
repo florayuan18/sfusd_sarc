@@ -2,6 +2,7 @@ import type { School } from "@/types/school";
 import { CommuteMetrics } from "@/components/CommuteMetrics";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { SCHOOL_TYPE_LABELS } from "@/lib/schoolUtils";
 
 type SchoolProfileCardProps = {
   school: School;
@@ -12,7 +13,9 @@ export function SchoolProfileCard({ school }: SchoolProfileCardProps) {
     <Card className="p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-sm font-semibold text-accent">{school.type}</div>
+          <div className="text-sm font-semibold text-accent">
+            {SCHOOL_TYPE_LABELS[school.type]}
+          </div>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">
             {school.name}
           </h2>
@@ -46,12 +49,8 @@ export function SchoolProfileCard({ school }: SchoolProfileCardProps) {
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3">
-        <Button>
-          View full school profile
-        </Button>
-        <Button variant="secondary">
-          Compare
-        </Button>
+        <Button>View full school profile</Button>
+        <Button variant="secondary">Compare</Button>
       </div>
     </Card>
   );
