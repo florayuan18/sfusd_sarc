@@ -1,15 +1,19 @@
-import type { School } from "@/types/school";
+import type { CommuteResultsBySchoolId, School } from "@/types/school";
 import { cn } from "@/lib/classNames";
 import { Card } from "@/components/ui/Card";
 import { SCHOOL_TYPE_LABELS } from "@/lib/schoolUtils";
 
 type NearbySchoolsListProps = {
+  commuteResults: CommuteResultsBySchoolId;
+  isLoadingCommute?: boolean;
   schools: School[];
   selectedSchoolId?: string;
   onSelectSchool: (school: School) => void;
 };
 
 export function NearbySchoolsList({
+  commuteResults,
+  isLoadingCommute = false,
   schools,
   selectedSchoolId,
   onSelectSchool
@@ -23,9 +27,20 @@ export function NearbySchoolsList({
         <span className="text-sm text-slate-500">Top {schools.length}</span>
       </div>
 
+      {isLoadingCommute ? (
+        <div className="mb-3 rounded-xl bg-blue-50 px-3 py-2 text-sm font-medium text-accent">
+          Updating commute times...
+        </div>
+      ) : null}
+
       <div className="space-y-2">
         {schools.map((school) => {
           const isSelected = school.id === selectedSchoolId;
+          const commuteResult = commuteResults[school.id];
+          const distanceMiles =
+            commuteResult?.distanceMiles ?? school.distanceMiles;
+          const commuteMinutes =
+            commuteResult?.transitMinutes ?? school.commute.transitMinutes;
 
           return (
             <button
@@ -46,11 +61,11 @@ export function NearbySchoolsList({
                   </div>
                   <div className="mt-1 text-sm text-slate-500">
                     {SCHOOL_TYPE_LABELS[school.type]} ·{" "}
-                    {school.distanceMiles.toFixed(1)} miles
+                    {distanceMiles.toFixed(1)} miles
                   </div>
                 </div>
                 <div className="shrink-0 rounded-full bg-white px-3 py-1 text-sm font-semibold text-slate-700 shadow-sm">
-                  {school.commute.drivingMinutes} min
+                  {commuteMinutes} min
                 </div>
               </div>
             </button>

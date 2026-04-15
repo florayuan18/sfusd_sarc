@@ -1,27 +1,37 @@
-import type { School } from "@/types/school";
+import type { CommuteResult, School } from "@/types/school";
 
 type CommuteMetricsProps = {
+  commuteResult?: CommuteResult;
+  isLoading?: boolean;
   school: School;
 };
 
-export function CommuteMetrics({ school }: CommuteMetricsProps) {
+export function CommuteMetrics({
+  commuteResult,
+  isLoading = false,
+  school
+}: CommuteMetricsProps) {
   const metrics = [
     {
       label: "Walk",
-      value: school.commute.walkingMinutes
+      value: commuteResult?.walkingMinutes ?? school.commute.walkingMinutes
+    },
+    {
+      label: "Bike",
+      value: commuteResult?.bikingMinutes
     },
     {
       label: "Drive",
-      value: school.commute.drivingMinutes
+      value: commuteResult?.drivingMinutes ?? school.commute.drivingMinutes
     },
     {
-      label: "Muni",
-      value: school.commute.transitMinutes
+      label: commuteResult?.transitLabel ?? "Muni",
+      value: commuteResult?.transitMinutes ?? school.commute.transitMinutes
     }
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
       {metrics.map((metric) => (
         <div
           key={metric.label}
@@ -30,12 +40,28 @@ export function CommuteMetrics({ school }: CommuteMetricsProps) {
           <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
             {metric.label}
           </div>
-          <div className="mt-1 text-xl font-semibold text-slate-950">
-            {metric.value}
-            <span className="ml-1 text-sm font-medium text-slate-500">min</span>
-          </div>
+          {isLoading && metric.value === undefined ? (
+            <div className="mt-2 h-6 w-14 animate-pulse rounded bg-slate-200" />
+          ) : (
+            <div className="mt-1 text-xl font-semibold text-slate-950">
+              {formatMinutes(metric.value)}
+              {typeof metric.value === "number" ? (
+                <span className="ml-1 text-sm font-medium text-slate-500">
+                  min
+                </span>
+              ) : null}
+            </div>
+          )}
         </div>
       ))}
     </div>
   );
+}
+
+function formatMinutes(value: number | null | undefined) {
+  if (typeof value !== "number") {
+    return "—";
+  }
+
+  return value;
 }

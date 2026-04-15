@@ -2,9 +2,31 @@ import { loadGoogleMaps } from "@/lib/googleMaps";
 import type { Coordinates, School } from "@/types/school";
 
 const geocodeCache = new Map<string, Promise<Coordinates | null>>();
+const GOOGLE_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 
 export function geocodeHomeAddress(address: string) {
   return geocodeAddress(formatSfAddress(address));
+}
+
+export async function geocodeHomeAddressViaApi(address: string) {
+  const response = await fetch("/api/geocode", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ address })
+  });
+
+  const payload = (await response.json()) as {
+    coordinates?: Coordinates;
+    error?: string;
+  };
+
+  if (!response.ok || !payload.coordinates) {
+    throw new Error(payload.error || "Unable to geocode address.");
+  }
+
+  return payload.coordinates;
 }
 
 export function geocodeSchoolAddress(school: School) {
@@ -13,6 +35,44 @@ export function geocodeSchoolAddress(school: School) {
 
 export function getCachedGeocode(address: string) {
   return geocodeCache.get(getCacheKey(address));
+}
+
+export async function geocodeAddressServer(address: string) {
+  const apiKey =
+    process.env.GOOGLE_MAPS_SERVER_API_KEY ||
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Missing GOOGLE_MAPS_SERVER_API_KEY.");
+  }
+
+  const params = new URLSearchParams({
+    address: formatSfAddress(address),
+    key: apiKey,
+    components: "country:US"
+  });
+
+  const response = await fetch(`${GOOGLE_GEOCODING_URL}?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`Geocoding API failed with ${response.status}.`);
+  }
+
+  const payload = (await response.json()) as {
+    status: string;
+    error_message?: string;
+    results?: Array<{
+      geometry: {
+        location: Coordinates;
+      };
+    }>;
+  };
+
+  if (payload.status !== "OK" || !payload.results?.[0]) {
+    throw new Error(payload.error_message || `Geocoding failed: ${payload.status}`);
+  }
+
+  return payload.results[0].geometry.location;
 }
 
 async function geocodeAddress(address: string): Promise<Coordinates | null> {

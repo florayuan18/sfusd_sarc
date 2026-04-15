@@ -3,6 +3,7 @@ import { SchoolMap } from "@/components/SchoolMap";
 import { SchoolProfileCard } from "@/components/SchoolProfileCard";
 import { SchoolTypeFilter } from "@/components/SchoolTypeFilter";
 import type {
+  CommuteResultsBySchoolId,
   Coordinates,
   CoordinatesBySchoolId,
   RadiusMinutes,
@@ -13,10 +14,13 @@ import type {
 
 type SearchResultsProps = {
   activeSchool?: School;
+  commuteError: string | null;
+  commuteResults: CommuteResultsBySchoolId;
   counts: SchoolCounts;
   filteredSchools: School[];
   homeAddress: string;
   homeCoordinates?: Coordinates;
+  isLoadingCommute: boolean;
   nearbySchools: School[];
   radiusMinutes: RadiusMinutes;
   selectedFilter: SchoolFilter;
@@ -33,10 +37,13 @@ type SearchResultsProps = {
 
 export function SearchResults({
   activeSchool,
+  commuteError,
+  commuteResults,
   counts,
   filteredSchools,
   homeAddress,
   homeCoordinates,
+  isLoadingCommute,
   nearbySchools,
   radiusMinutes,
   selectedFilter,
@@ -70,8 +77,22 @@ export function SearchResults({
         />
 
         <aside className="space-y-6">
-          {activeSchool ? <SchoolProfileCard school={activeSchool} /> : null}
+          {commuteError ? (
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              {commuteError}
+            </div>
+          ) : null}
+
+          {activeSchool ? (
+            <SchoolProfileCard
+              commuteResult={commuteResults[activeSchool.id]}
+              isLoadingCommute={isLoadingCommute}
+              school={activeSchool}
+            />
+          ) : null}
           <NearbySchoolsList
+            commuteResults={commuteResults}
+            isLoadingCommute={isLoadingCommute}
             schools={nearbySchools}
             selectedSchoolId={activeSchool?.id}
             onSelectSchool={onSelectSchool}

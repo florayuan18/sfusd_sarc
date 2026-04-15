@@ -1,4 +1,6 @@
 import type {
+  CommuteMode,
+  CommuteResultsBySchoolId,
   RawSfusdSchool,
   School,
   SchoolCounts,
@@ -135,6 +137,57 @@ export function getInitialSchoolForFilter(
   return getFilteredSchools(schools, selectedFilter)[0];
 }
 
+export function sortSchoolsByCommute(
+  schools: School[],
+  commuteResults: CommuteResultsBySchoolId,
+  mode: CommuteMode = "transit"
+) {
+  return [...schools].sort((schoolA, schoolB) => {
+    const resultA = commuteResults[schoolA.id];
+    const resultB = commuteResults[schoolB.id];
+    const timeA = getCommuteTimeForMode(resultA, mode);
+    const timeB = getCommuteTimeForMode(resultB, mode);
+
+    if (timeA !== timeB) {
+      return timeA - timeB;
+    }
+
+    return getDistanceSortValue(resultA, schoolA) - getDistanceSortValue(resultB, schoolB);
+  });
+}
+
+export function getNearbySchoolsWithPinnedSelection({
+  commuteResults,
+  limit,
+  mode = "transit",
+  schools,
+  selectedSchool
+}: {
+  commuteResults: CommuteResultsBySchoolId;
+  limit: number;
+  mode?: CommuteMode;
+  schools: School[];
+  selectedSchool?: School;
+}) {
+  const sortedSchools = sortSchoolsByCommute(schools, commuteResults, mode);
+  const nearbySchools = sortedSchools.slice(0, limit);
+
+  if (
+    !selectedSchool ||
+    nearbySchools.some((school) => school.id === selectedSchool.id) ||
+    !schools.some((school) => school.id === selectedSchool.id)
+  ) {
+    return nearbySchools;
+  }
+
+  return [
+    selectedSchool,
+    ...nearbySchools
+      .filter((school) => school.id !== selectedSchool.id)
+      .slice(0, Math.max(0, limit - 1))
+  ];
+}
+
 function normalizeGradeLevels(gradeLevels: RawSfusdSchool["gradeLevels"]) {
   const gradeText = getGradeLevelsText(gradeLevels);
 
@@ -191,4 +244,29 @@ function getGradeLevelsText(
   gradeLevels: RawSfusdSchool["gradeLevels"]
 ): string {
   return typeof gradeLevels === "string" ? gradeLevels : gradeLevels.join(" ");
+}
+
+function getCommuteTimeForMode(
+  result: CommuteResultsBySchoolId[string] | undefined,
+  mode: CommuteMode
+) {
+  if (!result) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const timeByMode = {
+    transit: result.transitMinutes,
+    driving: result.drivingMinutes,
+    walking: result.walkingMinutes,
+    biking: result.bikingMinutes
+  };
+
+  return timeByMode[mode] ?? Number.POSITIVE_INFINITY;
+}
+
+function getDistanceSortValue(
+  result: CommuteResultsBySchoolId[string] | undefined,
+  school: School
+) {
+  return result?.distanceMiles ?? school.distanceMiles;
 }

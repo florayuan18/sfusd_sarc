@@ -21,9 +21,11 @@ Add a Google Maps browser key to `.env.local`:
 
 ```bash
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+GOOGLE_MAPS_SERVER_API_KEY=your_server_google_maps_api_key_here
 ```
 
-The key needs access to the Google Maps JavaScript API and Geocoding API.
+The public key needs access to the Google Maps JavaScript API. The server key
+needs access to the Geocoding API and Routes API.
 
 Start the app:
 

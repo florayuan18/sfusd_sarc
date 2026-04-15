@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { useCommuteResults } from "@/hooks/useCommuteResults";
 import { sfusdSchools } from "@/data/sfusd_schools";
 import {
   getFilteredSchools,
   getInitialSchoolForFilter,
+  getNearbySchoolsWithPinnedSelection,
   getSchoolCounts,
   normalizeSchools
 } from "@/lib/schoolUtils";
@@ -34,15 +36,42 @@ export function useSarcNavigator() {
     () => getFilteredSchools(allSchools, selectedFilter),
     [selectedFilter]
   );
-  const nearbySchools = filteredSchools.slice(0, MAX_NEARBY_SCHOOLS);
+  const { commuteError, commuteResults, isLoadingCommute } = useCommuteResults({
+    hasSearched,
+    homeCoordinates,
+    schoolCoordinatesMap,
+    schools: filteredSchools
+  });
+  const nearbySchools = useMemo(
+    () =>
+      getNearbySchoolsWithPinnedSelection({
+        commuteResults,
+        limit: MAX_NEARBY_SCHOOLS,
+        schools: filteredSchools,
+        selectedSchool
+      }),
+    [commuteResults, filteredSchools, selectedSchool]
+  );
   const activeSchool = selectedSchool ?? nearbySchools[0];
 
   const search = useCallback(() => {
     setHasSearched(true);
     setSelectedFilter("all");
     setSelectedSchool(allSchools[0]);
+  }, []);
+
+  const updateAddress = useCallback((value: string) => {
+    setAddress(value);
     setHomeCoordinates(undefined);
   }, []);
+
+  const selectAddressSuggestion = useCallback(
+    (value: string, coordinates: Coordinates) => {
+      setAddress(value);
+      setHomeCoordinates(coordinates);
+    },
+    []
+  );
 
   const selectFilter = useCallback((filter: SchoolFilter) => {
     setSelectedFilter(filter);
@@ -68,10 +97,13 @@ export function useSarcNavigator() {
   return {
     activeSchool,
     address,
+    commuteError,
+    commuteResults,
     counts,
     filteredSchools,
     hasSearched,
     homeCoordinates,
+    isLoadingCommute,
     nearbySchools,
     radiusMinutes,
     schoolCoordinatesMap,
@@ -79,8 +111,9 @@ export function useSarcNavigator() {
     search,
     saveSchoolCoordinates,
     selectFilter,
+    selectAddressSuggestion,
     selectSchool: setSelectedSchool,
-    setAddress,
+    setAddress: updateAddress,
     setHomeCoordinates,
     setRadiusMinutes
   };

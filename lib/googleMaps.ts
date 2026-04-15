@@ -52,6 +52,7 @@ export function loadGoogleMaps() {
     const params = new URLSearchParams({
       key: apiKey,
       callback: "__initSarcGoogleMaps",
+      libraries: "places",
       v: "weekly"
     });
 

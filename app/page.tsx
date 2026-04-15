@@ -21,6 +21,7 @@ export default function Home() {
           <AddressSearch
             address={navigator.address}
             onAddressChange={navigator.setAddress}
+            onAddressSelect={navigator.selectAddressSuggestion}
             onSearch={navigator.search}
           />
 
@@ -29,10 +30,13 @@ export default function Home() {
           ) : (
             <SearchResults
               activeSchool={navigator.activeSchool}
+              commuteError={navigator.commuteError}
+              commuteResults={navigator.commuteResults}
               counts={navigator.counts}
               filteredSchools={navigator.filteredSchools}
               homeAddress={navigator.address}
               homeCoordinates={navigator.homeCoordinates}
+              isLoadingCommute={navigator.isLoadingCommute}
               nearbySchools={navigator.nearbySchools}
               radiusMinutes={navigator.radiusMinutes}
               selectedFilter={navigator.selectedFilter}

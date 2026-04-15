@@ -1,17 +1,75 @@
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { loadGoogleMaps } from "@/lib/googleMaps";
+import type { Coordinates } from "@/types/school";
 
 type AddressSearchProps = {
   address: string;
   onAddressChange: (value: string) => void;
+  onAddressSelect: (address: string, coordinates: Coordinates) => void;
   onSearch: () => void;
 };
 
 export function AddressSearch({
   address,
   onAddressChange,
+  onAddressSelect,
   onSearch
 }: AddressSearchProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let autocomplete: google.maps.places.Autocomplete | undefined;
+    let listener: google.maps.MapsEventListener | undefined;
+    let isMounted = true;
+
+    loadGoogleMaps()
+      .then((google) => {
+        if (!isMounted || !inputRef.current || !google.maps.places) {
+          return;
+        }
+
+        autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+          componentRestrictions: {
+            country: "us"
+          },
+          fields: ["formatted_address", "geometry", "name"],
+          types: ["address"]
+        });
+
+        const sanFranciscoBounds = new google.maps.LatLngBounds(
+          { lat: 37.604, lng: -122.56 },
+          { lat: 37.833, lng: -122.35 }
+        );
+
+        autocomplete.setBounds(sanFranciscoBounds);
+        autocomplete.setOptions({ strictBounds: false });
+
+        listener = autocomplete.addListener("place_changed", () => {
+          const place = autocomplete?.getPlace();
+          const location = place?.geometry?.location;
+
+          if (!location) {
+            return;
+          }
+
+          onAddressSelect(place.formatted_address || place.name || "", {
+            lat: location.lat(),
+            lng: location.lng()
+          });
+        });
+      })
+      .catch(() => {
+        // The map panel already explains missing/invalid Maps setup.
+      });
+
+    return () => {
+      isMounted = false;
+      listener?.remove();
+    };
+  }, [onAddressSelect]);
+
   return (
     <Card className="p-5 md:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end">
@@ -20,6 +78,7 @@ export function AddressSearch({
             Home address in San Francisco
           </span>
           <input
+            ref={inputRef}
             type="text"
             value={address}
             onChange={(event) => onAddressChange(event.target.value)}

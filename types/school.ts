@@ -11,6 +11,28 @@ export type CoordinatesBySchoolId = Record<string, Coordinates>;
 
 export type RadiusMinutes = 10 | 20 | 30;
 
+export type CommuteFit = "High" | "Medium" | "Low";
+
+export type CommuteMode = "transit" | "driving" | "walking" | "biking";
+
+export type CommuteResult = {
+  schoolId: string;
+  distanceMiles: number | null;
+  drivingMinutes: number | null;
+  walkingMinutes: number | null;
+  bikingMinutes: number | null;
+  transitMinutes: number | null;
+  transitLabel: string;
+  commuteFit: CommuteFit;
+};
+
+export type CommuteResultsBySchoolId = Record<string, CommuteResult>;
+
+export type CommuteDestination = {
+  schoolId: string;
+  coordinates: Coordinates;
+};
+
 export type RawSfusdSchool = {
   id: string | number;
   name: string;
