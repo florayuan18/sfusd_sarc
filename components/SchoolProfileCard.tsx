@@ -8,22 +8,38 @@ type SchoolProfileCardProps = {
   commuteResult?: CommuteResult;
   isLoadingCommute?: boolean;
   school: School;
+  isNearest?: boolean;
+  selectedFilter?: string;
 };
 
 export function SchoolProfileCard({
   commuteResult,
   isLoadingCommute = false,
-  school
+  school,
+  isNearest = false,
+  selectedFilter = ""
 }: SchoolProfileCardProps) {
   const distanceMiles = commuteResult?.distanceMiles ?? school.distanceMiles;
+  const schoolTypeLabel = SCHOOL_TYPE_LABELS[school.type];
+  const nearestLabel = isNearest
+    ? selectedFilter === "all"
+      ? "Nearest school"
+      : `Nearest ${schoolTypeLabel}`
+    : schoolTypeLabel;
+  const showTypeDetail = isNearest && selectedFilter === "all";
 
   return (
     <Card className="p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-sm font-semibold text-accent">
-            {SCHOOL_TYPE_LABELS[school.type]}
+            {nearestLabel}
           </div>
+          {showTypeDetail ? (
+            <div className="mt-1 text-sm text-slate-500">
+              {schoolTypeLabel}
+            </div>
+          ) : null}
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">
             {school.name}
           </h2>

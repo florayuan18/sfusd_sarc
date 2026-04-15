@@ -88,6 +88,8 @@ export function SearchResults({
               commuteResult={commuteResults[activeSchool.id]}
               isLoadingCommute={isLoadingCommute}
               school={activeSchool}
+              isNearest={activeSchool.id === nearbySchools[0]?.id}
+              selectedFilter={selectedFilter}
             />
           ) : null}
           <NearbySchoolsList
