@@ -16,8 +16,6 @@ export function SchoolProfileCard({
   school
 }: SchoolProfileCardProps) {
   const distanceMiles = commuteResult?.distanceMiles ?? school.distanceMiles;
-  const commuteFit = commuteResult?.commuteFit;
-  const commuteFitPercent = getCommuteFitPercent(commuteFit, school.commuteFit);
 
   return (
     <Card className="p-5">
@@ -43,21 +41,6 @@ export function SchoolProfileCard({
         />
       </div>
 
-      <div className="mt-5">
-        <div className="mb-2 flex items-center justify-between text-sm">
-          <span className="font-medium text-slate-700">Commute fit</span>
-          <span className="font-semibold text-slate-950">
-            {commuteFit ?? `${commuteFitPercent}%`}
-          </span>
-        </div>
-        <div className="h-3 overflow-hidden rounded-full bg-slate-100">
-          <div
-            className="h-full rounded-full bg-accent"
-            style={{ width: `${commuteFitPercent}%` }}
-          />
-        </div>
-      </div>
-
       <p className="mt-5 text-sm leading-6 text-slate-600">
         {school.description}
       </p>
@@ -70,21 +53,3 @@ export function SchoolProfileCard({
   );
 }
 
-function getCommuteFitPercent(
-  commuteFit: CommuteResult["commuteFit"] | undefined,
-  fallbackPercent: number
-) {
-  if (commuteFit === "High") {
-    return 88;
-  }
-
-  if (commuteFit === "Medium") {
-    return 62;
-  }
-
-  if (commuteFit === "Low") {
-    return 32;
-  }
-
-  return fallbackPercent;
-}
