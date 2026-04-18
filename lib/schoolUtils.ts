@@ -1,6 +1,6 @@
 import type {
-  CommuteMode,
   CommuteResultsBySchoolId,
+  Coordinates,
   RawSfusdSchool,
   School,
   SchoolCounts,
@@ -39,6 +39,13 @@ export function normalizeSchools(
     return {
       ...school,
       id: String(school.id),
+      coordinates:
+        typeof school.lat === "number" && typeof school.lng === "number"
+          ? {
+              lat: school.lat,
+              lng: school.lng
+            }
+          : undefined,
       type,
       description: getSchoolDescription(type, school.gradeLevels),
       distanceMiles: Number((0.7 + (index % 12) * 0.34).toFixed(1)),
@@ -137,55 +144,38 @@ export function getInitialSchoolForFilter(
   return getFilteredSchools(schools, selectedFilter)[0];
 }
 
-export function sortSchoolsByCommute(
-  schools: School[],
-  commuteResults: CommuteResultsBySchoolId,
-  mode: CommuteMode = "transit"
-) {
-  return [...schools].sort((schoolA, schoolB) => {
-    const resultA = commuteResults[schoolA.id];
-    const resultB = commuteResults[schoolB.id];
-    const timeA = getCommuteTimeForMode(resultA, mode);
-    const timeB = getCommuteTimeForMode(resultB, mode);
-
-    if (timeA !== timeB) {
-      return timeA - timeB;
-    }
-
-    return getDistanceSortValue(resultA, schoolA) - getDistanceSortValue(resultB, schoolB);
-  });
-}
-
-export function getNearbySchoolsWithPinnedSelection({
-  commuteResults,
-  limit,
-  mode = "transit",
+export function getNearbySchoolsInRadius({
+  homeCoordinates,
+  radiusMeters,
+  schoolCoordinatesMap,
   schools,
-  selectedSchool
 }: {
-  commuteResults: CommuteResultsBySchoolId;
-  limit: number;
-  mode?: CommuteMode;
+  homeCoordinates?: Coordinates;
+  radiusMeters: number;
+  schoolCoordinatesMap: Record<string, Coordinates>;
   schools: School[];
-  selectedSchool?: School;
 }) {
-  const sortedSchools = sortSchoolsByCommute(schools, commuteResults, mode);
-  const nearbySchools = sortedSchools.slice(0, limit);
-
-  if (
-    !selectedSchool ||
-    nearbySchools.some((school) => school.id === selectedSchool.id) ||
-    !schools.some((school) => school.id === selectedSchool.id)
-  ) {
-    return nearbySchools;
+  if (!homeCoordinates) {
+    return [];
   }
 
-  return [
-    selectedSchool,
-    ...nearbySchools
-      .filter((school) => school.id !== selectedSchool.id)
-      .slice(0, Math.max(0, limit - 1))
-  ];
+  return schools
+    .filter((school) =>
+      isSchoolWithinRadius({
+        homeCoordinates,
+        radiusMeters,
+        schoolCoordinates: schoolCoordinatesMap[school.id]
+      })
+    )
+    .sort((schoolA, schoolB) => {
+      const coordinatesA = schoolCoordinatesMap[schoolA.id];
+      const coordinatesB = schoolCoordinatesMap[schoolB.id];
+
+      return (
+        getDistanceMilesBetweenCoordinates(homeCoordinates, coordinatesA) -
+        getDistanceMilesBetweenCoordinates(homeCoordinates, coordinatesB)
+      );
+    });
 }
 
 function normalizeGradeLevels(gradeLevels: RawSfusdSchool["gradeLevels"]) {
@@ -234,10 +224,10 @@ function getSchoolDescription(
   const gradeLabel = getGradeLevelsText(gradeLevels);
 
   if (type === "other") {
-    return `An SFUSD program serving ${gradeLabel}. Commute and map details are shown for planning only.`;
+    return `An SFUSD program serving ${gradeLabel}.`;
   }
 
-  return `An SFUSD ${SCHOOL_TYPE_LABELS[type].toLowerCase()} school serving ${gradeLabel}. Commute values are mock estimates for this PASS 2 demo.`;
+  return `An SFUSD ${SCHOOL_TYPE_LABELS[type].toLowerCase()} school serving ${gradeLabel}.`;
 }
 
 function getGradeLevelsText(
@@ -246,27 +236,60 @@ function getGradeLevelsText(
   return typeof gradeLevels === "string" ? gradeLevels : gradeLevels.join(" ");
 }
 
-function getCommuteTimeForMode(
-  result: CommuteResultsBySchoolId[string] | undefined,
-  mode: CommuteMode
+export function isSchoolWithinRadius({
+  homeCoordinates,
+  radiusMeters,
+  schoolCoordinates
+}: {
+  homeCoordinates?: Coordinates;
+  radiusMeters: number;
+  schoolCoordinates?: Coordinates;
+}) {
+  if (!homeCoordinates || !schoolCoordinates) {
+    return false;
+  }
+
+  return (
+    getDistanceBetweenCoordinates(homeCoordinates, schoolCoordinates) <=
+    radiusMeters
+  );
+}
+
+export function getDistanceMilesBetweenCoordinates(
+  origin?: Coordinates,
+  destination?: Coordinates
 ) {
-  if (!result) {
+  if (!origin || !destination) {
     return Number.POSITIVE_INFINITY;
   }
 
-  const timeByMode = {
-    transit: result.transitMinutes,
-    driving: result.drivingMinutes,
-    walking: result.walkingMinutes,
-    biking: result.bikingMinutes
-  };
-
-  return timeByMode[mode] ?? Number.POSITIVE_INFINITY;
+  return Number((getDistanceBetweenCoordinates(origin, destination) / 1609.344).toFixed(1));
 }
 
-function getDistanceSortValue(
-  result: CommuteResultsBySchoolId[string] | undefined,
-  school: School
+function getDistanceBetweenCoordinates(
+  origin: Coordinates,
+  destination: Coordinates
 ) {
-  return result?.distanceMiles ?? school.distanceMiles;
+  const earthRadiusMeters = 6371000;
+  const latDelta = toRadians(destination.lat - origin.lat);
+  const lngDelta = toRadians(destination.lng - origin.lng);
+  const originLat = toRadians(origin.lat);
+  const destinationLat = toRadians(destination.lat);
+
+  const haversine =
+    Math.sin(latDelta / 2) * Math.sin(latDelta / 2) +
+    Math.cos(originLat) *
+      Math.cos(destinationLat) *
+      Math.sin(lngDelta / 2) *
+      Math.sin(lngDelta / 2);
+
+  return (
+    2 *
+    earthRadiusMeters *
+    Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine))
+  );
+}
+
+function toRadians(value: number) {
+  return (value * Math.PI) / 180;
 }

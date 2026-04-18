@@ -38,6 +38,8 @@ export type RawSfusdSchool = {
   name: string;
   gradeLevels: readonly string[] | string;
   address: string;
+  lat?: number;
+  lng?: number;
 };
 
 export type School = {
@@ -45,6 +47,7 @@ export type School = {
   name: string;
   gradeLevels: readonly string[] | string;
   address: string;
+  coordinates?: Coordinates;
   type: SchoolType;
   description: string;
   distanceMiles: number;

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "geocode:schools": "node scripts/geocode-sfusd-schools.mjs"
   },
   "dependencies": {
     "next": "^14.2.35",

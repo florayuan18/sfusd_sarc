@@ -8,6 +8,7 @@ import { useHomeGeocoding } from "@/hooks/map/useHomeGeocoding";
 import { useHomeMarker } from "@/hooks/map/useHomeMarker";
 import { useSchoolGeocoding } from "@/hooks/map/useSchoolGeocoding";
 import { useSchoolMarkers } from "@/hooks/map/useSchoolMarkers";
+import { RADIUS_METERS_BY_MINUTES } from "@/lib/mapConfig";
 import type {
   Coordinates,
   CoordinatesBySchoolId,
@@ -18,10 +19,13 @@ import type {
 type SchoolMapProps = {
   homeAddress: string;
   homeCoordinates?: Coordinates;
+  filteredSchoolIds: Set<string>;
   radiusMinutes: RadiusMinutes;
+  schoolNumberMap: Record<string, number>;
   schools: School[];
   schoolCoordinatesMap: CoordinatesBySchoolId;
   selectedSchoolId?: string;
+  shouldPanToSelectedSchool: boolean;
   onHomeCoordinatesChange: (coordinates?: Coordinates) => void;
   onRadiusMinutesChange: (radiusMinutes: RadiusMinutes) => void;
   onSchoolCoordinatesResolved: (
@@ -34,10 +38,13 @@ type SchoolMapProps = {
 export function SchoolMap({
   homeAddress,
   homeCoordinates,
+  filteredSchoolIds,
   radiusMinutes,
+  schoolNumberMap,
   schools,
   schoolCoordinatesMap,
   selectedSchoolId,
+  shouldPanToSelectedSchool,
   onHomeCoordinatesChange,
   onRadiusMinutesChange,
   onSchoolCoordinatesResolved,
@@ -58,12 +65,17 @@ export function SchoolMap({
     onSchoolCoordinatesResolved
   });
   const resolvedMarkerCount = useSchoolMarkers({
+    filteredSchoolIds,
+    homeCoordinates,
     infoWindowRef,
     mapRef,
     mapStatus,
+    radiusMeters: RADIUS_METERS_BY_MINUTES[radiusMinutes],
+    schoolNumberMap,
     schools,
     schoolCoordinatesMap,
     selectedSchoolId,
+    shouldPanToSelectedSchool,
     onSelectSchool
   });
 
@@ -75,7 +87,7 @@ export function SchoolMap({
   });
 
   return (
-    <section className="relative min-h-[560px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-soft">
+    <section className="relative h-[500px] min-h-[440px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-soft lg:h-[70vh] lg:max-h-[640px] lg:min-h-[480px]">
       <div ref={mapContainerRef} className="absolute inset-0" />
 
       {mapStatus !== "ready" ? (

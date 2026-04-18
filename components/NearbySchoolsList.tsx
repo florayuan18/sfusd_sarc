@@ -1,11 +1,22 @@
-import type { CommuteResultsBySchoolId, School } from "@/types/school";
+import type {
+  CommuteResultsBySchoolId,
+  Coordinates,
+  CoordinatesBySchoolId,
+  School
+} from "@/types/school";
 import { cn } from "@/lib/classNames";
 import { Card } from "@/components/ui/Card";
-import { SCHOOL_TYPE_LABELS } from "@/lib/schoolUtils";
+import {
+  getDistanceMilesBetweenCoordinates,
+  SCHOOL_TYPE_LABELS
+} from "@/lib/schoolUtils";
 
 type NearbySchoolsListProps = {
   commuteResults: CommuteResultsBySchoolId;
+  homeCoordinates?: Coordinates;
   isLoadingCommute?: boolean;
+  schoolNumberMap: Record<string, number>;
+  schoolCoordinatesMap: CoordinatesBySchoolId;
   schools: School[];
   selectedSchoolId?: string;
   onSelectSchool: (school: School) => void;
@@ -13,7 +24,10 @@ type NearbySchoolsListProps = {
 
 export function NearbySchoolsList({
   commuteResults,
+  homeCoordinates,
   isLoadingCommute = false,
+  schoolNumberMap,
+  schoolCoordinatesMap,
   schools,
   selectedSchoolId,
   onSelectSchool
@@ -24,7 +38,7 @@ export function NearbySchoolsList({
         <h2 className="text-lg font-semibold text-slate-950">
           Nearby schools
         </h2>
-        <span className="text-sm text-slate-500">Top {schools.length}</span>
+        <span className="text-sm text-slate-500">{schools.length} in radius</span>
       </div>
 
       {isLoadingCommute ? (
@@ -37,8 +51,10 @@ export function NearbySchoolsList({
         {schools.map((school) => {
           const isSelected = school.id === selectedSchoolId;
           const commuteResult = commuteResults[school.id];
-          const distanceMiles =
-            commuteResult?.distanceMiles ?? school.distanceMiles;
+          const distanceMiles = getDistanceMilesBetweenCoordinates(
+            homeCoordinates,
+            schoolCoordinatesMap[school.id]
+          );
           const commuteMinutes =
             commuteResult?.transitMinutes ?? school.commute.transitMinutes;
 
@@ -55,13 +71,29 @@ export function NearbySchoolsList({
               )}
             >
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="font-semibold text-slate-950">
-                    {school.name}
-                  </div>
-                  <div className="mt-1 text-sm text-slate-500">
-                    {SCHOOL_TYPE_LABELS[school.type]} ·{" "}
-                    {distanceMiles.toFixed(1)} miles
+                <div className="min-w-0">
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={cn(
+                        "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
+                        isSelected
+                          ? "bg-accent text-white"
+                          : "bg-slate-100 text-slate-700"
+                      )}
+                    >
+                      {schoolNumberMap[school.id] ?? "?"}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-semibold text-slate-950">
+                        {school.name}
+                      </div>
+                      <div className="mt-1 text-sm text-slate-500">
+                        {SCHOOL_TYPE_LABELS[school.type]} ·{" "}
+                        {Number.isFinite(distanceMiles)
+                          ? `${distanceMiles.toFixed(1)} miles`
+                          : "Distance unavailable"}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="shrink-0 rounded-full bg-white px-3 py-1 text-sm font-semibold text-slate-700 shadow-sm">

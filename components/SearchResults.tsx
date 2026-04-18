@@ -18,6 +18,7 @@ type SearchResultsProps = {
   commuteResults: CommuteResultsBySchoolId;
   counts: SchoolCounts;
   filteredSchools: School[];
+  mapSchools: School[];
   homeAddress: string;
   homeCoordinates?: Coordinates;
   isLoadingCommute: boolean;
@@ -25,6 +26,7 @@ type SearchResultsProps = {
   radiusMinutes: RadiusMinutes;
   selectedFilter: SchoolFilter;
   schoolCoordinatesMap: CoordinatesBySchoolId;
+  shouldPanToSelectedSchool: boolean;
   onFilterChange: (filter: SchoolFilter) => void;
   onHomeCoordinatesChange: (coordinates?: Coordinates) => void;
   onRadiusMinutesChange: (radiusMinutes: RadiusMinutes) => void;
@@ -41,6 +43,7 @@ export function SearchResults({
   commuteResults,
   counts,
   filteredSchools,
+  mapSchools,
   homeAddress,
   homeCoordinates,
   isLoadingCommute,
@@ -48,35 +51,43 @@ export function SearchResults({
   radiusMinutes,
   selectedFilter,
   schoolCoordinatesMap,
+  shouldPanToSelectedSchool,
   onFilterChange,
   onHomeCoordinatesChange,
   onRadiusMinutesChange,
   onSchoolCoordinatesResolved,
   onSelectSchool
 }: SearchResultsProps) {
+  const schoolNumberMap = Object.fromEntries(
+    nearbySchools.map((school, index) => [school.id, index + 1])
+  );
+
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <SchoolTypeFilter
         selectedFilter={selectedFilter}
         counts={counts}
         onFilterChange={onFilterChange}
       />
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)]">
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
         <SchoolMap
           homeAddress={homeAddress}
           homeCoordinates={homeCoordinates}
           radiusMinutes={radiusMinutes}
-          schools={filteredSchools}
+          filteredSchoolIds={new Set(filteredSchools.map((school) => school.id))}
+          schoolNumberMap={schoolNumberMap}
+          schools={mapSchools}
           schoolCoordinatesMap={schoolCoordinatesMap}
           selectedSchoolId={activeSchool?.id}
+          shouldPanToSelectedSchool={shouldPanToSelectedSchool}
           onHomeCoordinatesChange={onHomeCoordinatesChange}
           onRadiusMinutesChange={onRadiusMinutesChange}
           onSchoolCoordinatesResolved={onSchoolCoordinatesResolved}
           onSelectSchool={onSelectSchool}
         />
 
-        <aside className="space-y-6">
+        <aside className="space-y-5 lg:sticky lg:top-4 lg:max-h-[70vh] lg:overflow-y-auto lg:pr-1">
           {commuteError ? (
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
               {commuteError}
@@ -94,7 +105,10 @@ export function SearchResults({
           ) : null}
           <NearbySchoolsList
             commuteResults={commuteResults}
+            homeCoordinates={homeCoordinates}
             isLoadingCommute={isLoadingCommute}
+            schoolNumberMap={schoolNumberMap}
+            schoolCoordinatesMap={schoolCoordinatesMap}
             schools={nearbySchools}
             selectedSchoolId={activeSchool?.id}
             onSelectSchool={onSelectSchool}

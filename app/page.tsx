@@ -11,13 +11,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+      <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8 lg:py-6">
         <PageHeader
           hasSearched={navigator.hasSearched}
           address={navigator.address}
         />
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           <AddressSearch
             address={navigator.address}
             onAddressChange={navigator.setAddress}
@@ -34,13 +34,15 @@ export default function Home() {
               commuteResults={navigator.commuteResults}
               counts={navigator.counts}
               filteredSchools={navigator.filteredSchools}
-              homeAddress={navigator.address}
+              mapSchools={navigator.allSchools}
+              homeAddress={navigator.submittedAddress}
               homeCoordinates={navigator.homeCoordinates}
               isLoadingCommute={navigator.isLoadingCommute}
               nearbySchools={navigator.nearbySchools}
               radiusMinutes={navigator.radiusMinutes}
               selectedFilter={navigator.selectedFilter}
               schoolCoordinatesMap={navigator.schoolCoordinatesMap}
+              shouldPanToSelectedSchool={navigator.shouldPanToSelectedSchool}
               onFilterChange={navigator.selectFilter}
               onHomeCoordinatesChange={navigator.setHomeCoordinates}
               onRadiusMinutesChange={navigator.setRadiusMinutes}

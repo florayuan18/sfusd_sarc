@@ -4,6 +4,7 @@ let googleMapsPromise: Promise<typeof google> | undefined;
 
 declare global {
   interface Window {
+    gm_authFailure?: () => void;
     __initSarcGoogleMaps?: () => void;
   }
 }
@@ -17,7 +18,7 @@ export function loadGoogleMaps() {
     return Promise.reject(new Error("Google Maps can only load in a browser."));
   }
 
-  if (window.google?.maps) {
+  if (window.google?.maps?.places) {
     return Promise.resolve(window.google);
   }
 
@@ -35,14 +36,45 @@ export function loadGoogleMaps() {
 
   googleMapsPromise = new Promise((resolve, reject) => {
     const existingScript = document.getElementById(GOOGLE_MAPS_SCRIPT_ID);
+    const timeoutId = window.setTimeout(() => {
+      reject(
+        new Error(
+          "Google Maps timed out. Check Maps JavaScript API, Places API, billing, and key restrictions."
+        )
+      );
+    }, 12000);
+
+    const finish = () => {
+      window.clearTimeout(timeoutId);
+      delete window.__initSarcGoogleMaps;
+      delete window.gm_authFailure;
+    };
+
+    window.gm_authFailure = () => {
+      finish();
+      googleMapsPromise = undefined;
+      reject(
+        new Error(
+          "Google Maps rejected the API key. Check API enablement, billing, and HTTP referrer restrictions."
+        )
+      );
+    };
 
     window.__initSarcGoogleMaps = () => {
+      finish();
       resolve(window.google);
-      delete window.__initSarcGoogleMaps;
     };
 
     if (existingScript) {
+      if (window.google?.maps?.places) {
+        finish();
+        resolve(window.google);
+        return;
+      }
+
       existingScript.addEventListener("error", () => {
+        finish();
+        googleMapsPromise = undefined;
         reject(new Error("Failed to load Google Maps."));
       });
       return;
@@ -60,7 +92,11 @@ export function loadGoogleMaps() {
     script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
     script.async = true;
     script.defer = true;
-    script.onerror = () => reject(new Error("Failed to load Google Maps."));
+    script.onerror = () => {
+      finish();
+      googleMapsPromise = undefined;
+      reject(new Error("Failed to load Google Maps."));
+    };
 
     document.head.appendChild(script);
   });

@@ -3,762 +3,1016 @@
     "id": 1,
     "name": "A.P. Giannini Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "3151 Ortega Street, San Francisco, CA 94122"
+    "address": "3151 Ortega Street, San Francisco, CA 94122",
+    "lat": 37.7503953,
+    "lng": -122.4974028
   },
   {
     "id": 2,
     "name": "Abraham Lincoln High School",
     "gradeLevels": "High School (9-12)",
-    "address": "2162 24th Avenue, San Francisco, CA 94116"
+    "address": "2162 24th Avenue, San Francisco, CA 94116",
+    "lat": 37.747304,
+    "lng": -122.4810281
   },
   {
     "id": 3,
     "name": "Access SFUSD: Bay Street",
     "gradeLevels": "County School (13)",
-    "address": "Transition Training Center, 416 Bay Street, San Francisco, CA 94133"
+    "address": "Transition Training Center, 416 Bay Street, San Francisco, CA 94133",
+    "lat": 37.8057766,
+    "lng": -122.4139884
   },
   {
     "id": 4,
     "name": "AccessSFUSD: The Arc",
     "gradeLevels": "County School (13)",
-    "address": "1520 Howard St, San Francisco, CA 94103"
+    "address": "1520 Howard St, San Francisco, CA 94103",
+    "lat": 37.7729568,
+    "lng": -122.4160559
   },
   {
     "id": 5,
     "name": "Alamo Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "250 23rd Avenue, San Francisco, CA 94121"
+    "address": "250 23rd Avenue, San Francisco, CA 94121",
+    "lat": 37.7829651,
+    "lng": -122.4822812
   },
   {
     "id": 6,
     "name": "Alice Fong Yu Alternative School (K-8)",
     "gradeLevels": "Elementary School, K-8 School, Middle School (K, 1-8)",
-    "address": "1541 12th Avenue, San Francisco, CA 94122"
+    "address": "1541 12th Avenue, San Francisco, CA 94122",
+    "lat": 37.7589066,
+    "lng": -122.4695456
   },
   {
     "id": 7,
     "name": "Alvarado Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "625 Douglass Street, San Francisco, CA 94114"
+    "address": "625 Douglass Street, San Francisco, CA 94114",
+    "lat": 37.7534167,
+    "lng": -122.4379036
   },
   {
     "id": 8,
     "name": "Aptos Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "105 Aptos Avenue, San Francisco, CA 94127"
+    "address": "105 Aptos Avenue, San Francisco, CA 94127",
+    "lat": 37.7297669,
+    "lng": -122.4658285
   },
   {
     "id": 9,
     "name": "Argonne Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "750 16th Avenue, San Francisco, CA 94118"
+    "address": "750 16th Avenue, San Francisco, CA 94118",
+    "lat": 37.7739615,
+    "lng": -122.4741883
   },
   {
     "id": 10,
     "name": "Argonne Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "680 18th Avenue, San Francisco, CA 94121"
+    "address": "680 18th Avenue, San Francisco, CA 94121",
+    "lat": 37.7752506,
+    "lng": -122.476521
   },
   {
     "id": 11,
     "name": "Balboa High School",
     "gradeLevels": "High School (9-13)",
-    "address": "1000 Cayuga Avenue, San Francisco, CA 94112"
+    "address": "1000 Cayuga Avenue, San Francisco, CA 94112",
+    "lat": 37.7211287,
+    "lng": -122.4414381
   },
   {
     "id": 12,
     "name": "Bessie Carmichael School PreK-8 Filipino Education Center",
     "gradeLevels": "Early Education, Elementary School, K-8 School, Middle School (PreK, TK, K, 1-8)",
-    "address": "375 7th Street (PK-5 Campus); 824 Harrison St. (6-8 Campus), San Francisco, CA 94103"
+    "address": "375 7th Street (PK-5 Campus); 824 Harrison St. (6-8 Campus), San Francisco, CA 94103",
+    "lat": 37.7762053,
+    "lng": -122.4065524
   },
   {
     "id": 13,
     "name": "Bret Harte Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "1035 Gilman Avenue, San Francisco, CA 94124"
+    "address": "1035 Gilman Avenue, San Francisco, CA 94124",
+    "lat": 37.7185053,
+    "lng": -122.3891484
   },
   {
     "id": 14,
     "name": "Bryant Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "2641 25th Street, San Francisco, CA 94110"
+    "address": "2641 25th Street, San Francisco, CA 94110",
+    "lat": 37.7514609,
+    "lng": -122.4049696
   },
   {
     "id": 15,
     "name": "Buena Vista Horace Mann K-8 Community School",
     "gradeLevels": "Elementary School, K-8 School, Middle School (K, 1-8)",
-    "address": "325 La Grande Ave, San Francisco, CA 94112-2866"
+    "address": "325 La Grande Ave, San Francisco, CA 94112-2866",
+    "lat": 37.71939709999999,
+    "lng": -122.4240018
   },
   {
     "id": 16,
     "name": "C.A.R.E. Bayview",
     "gradeLevels": "County School (9-10)",
-    "address": "1601 Lane Street, 3rd Floor, San Francisco, CA 94124"
+    "address": "1601 Lane Street, 3rd Floor, San Francisco, CA 94124",
+    "lat": 37.7316976,
+    "lng": -122.3898107
   },
   {
     "id": 17,
     "name": "C.A.R.E. Buchanan",
     "gradeLevels": "County School (9-10)",
-    "address": "1530 Buchanan Street, San Francisco, CA 94124"
+    "address": "1530 Buchanan Street, San Francisco, CA 94124",
+    "lat": 37.7842103,
+    "lng": -122.4291877
   },
   {
     "id": 18,
     "name": "C.A.R.E. Middle School",
     "gradeLevels": "County School (6-8)",
-    "address": "1601 Lane Street, 2nd Floor, San Francisco, CA 94124"
+    "address": "1601 Lane Street, 2nd Floor, San Francisco, CA 94124",
+    "lat": 37.7316976,
+    "lng": -122.3898107
   },
   {
     "id": 19,
     "name": "César Chávez Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "825 Shotwell Street, San Francisco, CA 94110"
+    "address": "825 Shotwell Street, San Francisco, CA 94110",
+    "lat": 37.7548293,
+    "lng": -122.4150481
   },
   {
     "id": 20,
     "name": "Chinese Immersion School at De Avila 中文沉浸學校",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1250 Waller Street, San Francisco, CA 94117"
+    "address": "1250 Waller Street, San Francisco, CA 94117",
+    "lat": 37.7699175,
+    "lng": -122.4444237
   },
   {
     "id": 21,
     "name": "Civic Center Secondary School",
     "gradeLevels": "Middle School, County School (7-12)",
-    "address": "727 Golden Gate Avenue, San Francisco, CA 94102"
+    "address": "727 Golden Gate Avenue, San Francisco, CA 94102",
+    "lat": 37.7803797,
+    "lng": -122.4228794
   },
   {
     "id": 22,
     "name": "Claire Lilienthal Alternative School (K-2 Madison Campus)",
     "gradeLevels": "Elementary School, K-8 School (K, 1-2)",
-    "address": "3950 Sacramento Street, San Francisco, CA 94118"
+    "address": "3950 Sacramento Street, San Francisco, CA 94118",
+    "lat": 37.7871038,
+    "lng": -122.457775
   },
   {
     "id": 23,
     "name": "Claire Lilienthal Alternative School K-8",
     "gradeLevels": "Elementary School, K-8 School, Middle School (K, 1-8)",
-    "address": "(3-8 Winfield Scott Campus) 3630 Divisadero Street; (K-2 Madison Campus) 3950 Sacramento Street, San Francisco, CA 94118"
+    "address": "(3-8 Winfield Scott Campus) 3630 Divisadero Street; (K-2 Madison Campus) 3950 Sacramento Street, San Francisco, CA 94118",
+    "lat": 37.8031655,
+    "lng": -122.4424844
   },
   {
     "id": 24,
     "name": "Clarendon Alternative Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "500 Clarendon Avenue, San Francisco, CA 94131"
+    "address": "500 Clarendon Avenue, San Francisco, CA 94131",
+    "lat": 37.753816,
+    "lng": -122.4561008
   },
   {
     "id": 25,
     "name": "Cleveland Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "455 Athens Street, San Francisco, CA 94112"
+    "address": "455 Athens Street, San Francisco, CA 94112",
+    "lat": 37.7201651,
+    "lng": -122.4287174
   },
   {
     "id": 26,
     "name": "Commodore Sloat Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "50 Darien Way, San Francisco, CA 94127"
+    "address": "50 Darien Way, San Francisco, CA 94127",
+    "lat": 37.7316529,
+    "lng": -122.4711882
   },
   {
     "id": 27,
     "name": "Commodore Stockton Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "1 Trenton Street, San Francisco, CA 94108"
+    "address": "1 Trenton Street, San Francisco, CA 94108",
+    "lat": 37.7950087,
+    "lng": -122.4091082
   },
   {
     "id": 28,
     "name": "Daniel Webster Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "465 Missouri Street, San Francisco, CA 94107"
+    "address": "465 Missouri Street, San Francisco, CA 94107",
+    "lat": 37.7602277,
+    "lng": -122.3960867
   },
   {
     "id": 29,
     "name": "Dianne Feinstein Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "2550 25th Avenue, San Francisco, CA 94116"
+    "address": "2550 25th Avenue, San Francisco, CA 94116",
+    "lat": 37.7395273,
+    "lng": -122.48122
   },
   {
     "id": 30,
     "name": "Dolores Huerta Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "65 Chenery Street, San Francisco, CA 94131"
+    "address": "65 Chenery Street, San Francisco, CA 94131",
+    "lat": 37.7401583,
+    "lng": -122.4253053
   },
   {
     "id": 31,
     "name": "Downtown High School",
     "gradeLevels": "High School (11-12)",
-    "address": "693 Vermont Street, San Francisco, CA 94107"
+    "address": "693 Vermont Street, San Francisco, CA 94107",
+    "lat": 37.7614078,
+    "lng": -122.4039416
   },
   {
     "id": 32,
     "name": "Dr. Charles R. Drew College Preparatory Academy",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "50 Pomona Street, San Francisco, CA 94124"
+    "address": "50 Pomona Street, San Francisco, CA 94124",
+    "lat": 37.7317559,
+    "lng": -122.3938961
   },
   {
     "id": 33,
     "name": "Dr. George Washington Carver Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1360 Oakdale Avenue, San Francisco, CA 94124"
+    "address": "1360 Oakdale Avenue, San Francisco, CA 94124",
+    "lat": 37.7318363,
+    "lng": -122.3854085
   },
   {
     "id": 34,
     "name": "Dr. Martin Luther King, Jr. Academic Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "350 Girard Street, San Francisco, CA 94134"
+    "address": "350 Girard Street, San Francisco, CA 94134",
+    "lat": 37.7276815,
+    "lng": -122.4055306
   },
   {
     "id": 35,
     "name": "Dr. William L. Cobb Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "2725 California Street, San Francisco, CA 94115"
+    "address": "2725 California Street, San Francisco, CA 94115",
+    "lat": 37.7877487,
+    "lng": -122.439609
   },
   {
     "id": 36,
     "name": "E.R. Taylor Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "423 Burrows Street, San Francisco, CA 94134"
+    "address": "423 Burrows Street, San Francisco, CA 94134",
+    "lat": 37.7274393,
+    "lng": -122.4071003
   },
   {
     "id": 37,
     "name": "Edwin and Anita Lee Newcomer School 李孟賢伉儷新移民學校",
     "gradeLevels": "Elementary School (2-5)",
-    "address": "950 Clay Street, San Francisco, CA 94108"
+    "address": "950 Clay Street, San Francisco, CA 94108",
+    "lat": 37.7945664,
+    "lng": -122.4088882
   },
   {
     "id": 38,
     "name": "El Dorado Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "70 Delta Street, San Francisco, CA 94134"
+    "address": "70 Delta Street, San Francisco, CA 94134",
+    "lat": 37.7185338,
+    "lng": -122.4073489
   },
   {
     "id": 39,
     "name": "Everett Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "450 Church Street, San Francisco, CA 94114"
+    "address": "450 Church Street, San Francisco, CA 94114",
+    "lat": 37.7637849,
+    "lng": -122.4290757
   },
   {
     "id": 40,
     "name": "Francis Scott Key Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1530 43rd Avenue, San Francisco, CA 94122"
+    "address": "1530 43rd Avenue, San Francisco, CA 94122",
+    "lat": 37.7581047,
+    "lng": -122.5020891
   },
   {
     "id": 41,
     "name": "Francisco Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "2190 Powell Street, San Francisco, CA 94133"
+    "address": "2190 Powell Street, San Francisco, CA 94133",
+    "lat": 37.8044606,
+    "lng": -122.4113756
   },
   {
     "id": 42,
     "name": "Frank McCoppin Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "651 6th Avenue, San Francisco, CA 94118"
+    "address": "651 6th Avenue, San Francisco, CA 94118",
+    "lat": 37.7763208,
+    "lng": -122.4642387
   },
   {
     "id": 43,
     "name": "Galileo Academy of Science & Technology",
     "gradeLevels": "High School (9-13)",
-    "address": "1150 Francisco Street, San Francisco, CA 94109"
+    "address": "1150 Francisco Street, San Francisco, CA 94109",
+    "lat": 37.8036717,
+    "lng": -122.4240178
   },
   {
     "id": 44,
     "name": "Garfield Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "420 Filbert Street, San Francisco, CA 94133"
+    "address": "420 Filbert Street, San Francisco, CA 94133",
+    "lat": 37.8023212,
+    "lng": -122.4068331
   },
   {
     "id": 45,
     "name": "George Peabody Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "251 6th Avenue, San Francisco, CA 94118"
+    "address": "251 6th Avenue, San Francisco, CA 94118",
+    "lat": 37.7838897,
+    "lng": -122.4650348
   },
   {
     "id": 46,
     "name": "George R. Moscone Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "2576 Harrison Street, San Francisco, CA 94110"
+    "address": "2576 Harrison Street, San Francisco, CA 94110",
+    "lat": 37.7564641,
+    "lng": -122.4125446
   },
   {
     "id": 47,
     "name": "George Washington High School",
     "gradeLevels": "High School (9-12)",
-    "address": "600 32nd Avenue, San Francisco, CA 94121"
+    "address": "600 32nd Avenue, San Francisco, CA 94121",
+    "lat": 37.7778979,
+    "lng": -122.491022
   },
   {
     "id": 48,
     "name": "Glen Park Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "151 Lippard Avenue, San Francisco, CA 94131"
+    "address": "151 Lippard Avenue, San Francisco, CA 94131",
+    "lat": 37.7330289,
+    "lng": -122.435391
   },
   {
     "id": 49,
     "name": "Gordon J. Lau Elementary School 劉貴明小學",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "950 Clay Street, San Francisco, CA 94108"
+    "address": "950 Clay Street, San Francisco, CA 94108",
+    "lat": 37.7945664,
+    "lng": -122.4088882
   },
   {
     "id": 50,
     "name": "Grattan Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "165 Grattan Street, San Francisco, CA 94117"
+    "address": "165 Grattan Street, San Francisco, CA 94117",
+    "lat": 37.7637982,
+    "lng": -122.4505354
   },
   {
     "id": 51,
     "name": "Guadalupe Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "859 Prague Street, San Francisco, CA 94112"
+    "address": "859 Prague Street, San Francisco, CA 94112",
+    "lat": 37.7100152,
+    "lng": -122.4343378
   },
   {
     "id": 52,
     "name": "Harvey Milk Civil Rights Academy",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "4235 19th Street, San Francisco, CA 94114"
+    "address": "4235 19th Street, San Francisco, CA 94114",
+    "lat": 37.7590178,
+    "lng": -122.436417
   },
   {
     "id": 53,
     "name": "Herbert Hoover Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "2290 14th Avenue, San Francisco, CA 94116"
+    "address": "2290 14th Avenue, San Francisco, CA 94116",
+    "lat": 37.745321,
+    "lng": -122.4683083
   },
   {
     "id": 54,
     "name": "Hillcrest Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "810 Silver Avenue, San Francisco, CA 94134"
+    "address": "810 Silver Avenue, San Francisco, CA 94134",
+    "lat": 37.728555,
+    "lng": -122.4189859
   },
   {
     "id": 55,
     "name": "Hilltop + El Camino Alternativo Schools",
     "gradeLevels": "County School (7-12)",
-    "address": "2730 Bryant Street, San Francisco, CA 94110"
+    "address": "2730 Bryant Street, San Francisco, CA 94110",
+    "lat": 37.750446,
+    "lng": -122.4091609
   },
   {
     "id": 56,
     "name": "Ida B. Wells High School",
     "gradeLevels": "High School (9-12)",
-    "address": "1099 Hayes Street, San Francisco, CA 94117"
+    "address": "1099 Hayes Street, San Francisco, CA 94117",
+    "lat": 37.7750608,
+    "lng": -122.4340242
   },
   {
     "id": 57,
     "name": "Independence High School",
     "gradeLevels": "High School (9-12)",
-    "address": "1350 7th Avenue, San Francisco, CA 94122"
+    "address": "1350 7th Avenue, San Francisco, CA 94122",
+    "lat": 37.7632828,
+    "lng": -122.4637964
   },
   {
     "id": 58,
     "name": "James Denman Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "241 Oneida Avenue, San Francisco, CA 94112"
+    "address": "241 Oneida Avenue, San Francisco, CA 94112",
+    "lat": 37.7216255,
+    "lng": -122.4429474
   },
   {
     "id": 59,
     "name": "James Lick Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "1220 Noe Street, San Francisco, CA 94114"
+    "address": "1220 Noe Street, San Francisco, CA 94114",
+    "lat": 37.7495745,
+    "lng": -122.4322586
   },
   {
     "id": 60,
     "name": "Jean Parker Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "840 Broadway Street, San Francisco, CA 94133"
+    "address": "840 Broadway Street, San Francisco, CA 94133",
+    "lat": 37.79747,
+    "lng": -122.4113024
   },
   {
     "id": 61,
     "name": "Jefferson Early Education School",
     "gradeLevels": "Early Education (PreK)",
-    "address": "1350 25th Avenue, San Francisco, CA 94122"
+    "address": "1350 25th Avenue, San Francisco, CA 94122",
+    "lat": 37.76250539999999,
+    "lng": -122.4829887
   },
   {
     "id": 62,
     "name": "Jefferson Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "1725 Irving Street, San Francisco, CA 94122"
+    "address": "1725 Irving Street, San Francisco, CA 94122",
+    "lat": 37.76333169999999,
+    "lng": -122.4768828
   },
   {
     "id": 63,
     "name": "John McLaren Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "2055 Sunnydale Avenue East Building With No Mural, San Francisco, CA 94134"
+    "address": "2055 Sunnydale Avenue East Building With No Mural, San Francisco, CA 94134",
+    "lat": 37.7135518,
+    "lng": -122.4227117
   },
   {
     "id": 64,
     "name": "John Muir Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "380 Webster Street, San Francisco, CA 94117"
+    "address": "380 Webster Street, San Francisco, CA 94117",
+    "lat": 37.7737919,
+    "lng": -122.4288078
   },
   {
     "id": 65,
     "name": "John O'Connell High School",
     "gradeLevels": "High School (9-13)",
-    "address": "2355 Folsom Street, San Francisco, CA 94110"
+    "address": "2355 Folsom Street, San Francisco, CA 94110",
+    "lat": 37.7594953,
+    "lng": -122.4140881
   },
   {
     "id": 66,
     "name": "John Yehall Chin Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "350 Broadway, San Francisco, CA 94133"
+    "address": "350 Broadway, San Francisco, CA 94133",
+    "lat": 37.7986148,
+    "lng": -122.4031323
   },
   {
     "id": 67,
     "name": "Jose Ortega Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "400 Sargent Street, San Francisco, CA 94132"
+    "address": "400 Sargent Street, San Francisco, CA 94132",
+    "lat": 37.7164174,
+    "lng": -122.4663083
   },
   {
     "id": 68,
     "name": "June Jordan School for Equity",
     "gradeLevels": "High School (9-12)",
-    "address": "325 La Grande Avenue, San Francisco, CA 94112"
+    "address": "325 La Grande Avenue, San Francisco, CA 94112",
+    "lat": 37.71939709999999,
+    "lng": -122.4240018
   },
   {
     "id": 69,
     "name": "Junipero Serra Annex Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "155 Appleton Avenue, San Francisco, CA 94110"
+    "address": "155 Appleton Avenue, San Francisco, CA 94110",
+    "lat": 37.7384951,
+    "lng": -122.4223927
   },
   {
     "id": 70,
     "name": "Junipero Serra Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "625 Holly Park Circle, San Francisco, CA 94110"
+    "address": "625 Holly Park Circle, San Francisco, CA 94110",
+    "lat": 37.7370151,
+    "lng": -122.4214821
   },
   {
     "id": 71,
     "name": "Lafayette Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "4545 Anza Street, San Francisco, CA 94121"
+    "address": "4545 Anza Street, San Francisco, CA 94121",
+    "lat": 37.7770051,
+    "lng": -122.4967838
   },
   {
     "id": 72,
     "name": "Lakeshore Alternative Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "220 Middlefield Drive, San Francisco, CA 94132"
+    "address": "220 Middlefield Drive, San Francisco, CA 94132",
+    "lat": 37.7306337,
+    "lng": -122.4857544
   },
   {
     "id": 73,
     "name": "Lawton Alternative School (K-8)",
     "gradeLevels": "Elementary School, K-8 School, Middle School (TK, K, 1-8)",
-    "address": "1570 31st Avenue, San Francisco, CA 94122"
+    "address": "1570 31st Avenue, San Francisco, CA 94122",
+    "lat": 37.7579723,
+    "lng": -122.4890022
   },
   {
     "id": 74,
     "name": "Leola M. Havard Early Education School",
     "gradeLevels": "Early Education (PreK)",
-    "address": "1360 Oakdale Avenue, San Francisco, CA 94124"
+    "address": "1360 Oakdale Avenue, San Francisco, CA 94124",
+    "lat": 37.7318363,
+    "lng": -122.3854085
   },
   {
     "id": 75,
     "name": "Leonard R. Flynn Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "3125 Cesar Chavez Street, San Francisco, CA 94110"
+    "address": "3125 Cesar Chavez Street, San Francisco, CA 94110",
+    "lat": 37.7477667,
+    "lng": -122.4118623
   },
   {
     "id": 76,
     "name": "Longfellow Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "755 Morse Street, San Francisco, CA 94112"
+    "address": "755 Morse Street, San Francisco, CA 94112",
+    "lat": 37.7102833,
+    "lng": -122.4465469
   },
   {
     "id": 77,
     "name": "Lowell High School",
     "gradeLevels": "High School (9-13)",
-    "address": "1101 Eucalyptus Drive, San Francisco, CA 94132"
+    "address": "1101 Eucalyptus Drive, San Francisco, CA 94132",
+    "lat": 37.7304506,
+    "lng": -122.4830447
   },
   {
     "id": 78,
     "name": "Malcolm X Academy Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "350 Harbor Road, San Francisco, CA 94124"
+    "address": "350 Harbor Road, San Francisco, CA 94124",
+    "lat": 37.7345543,
+    "lng": -122.3808359
   },
   {
     "id": 79,
     "name": "Marina Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "3500 Fillmore Street, San Francisco, CA 94123"
+    "address": "3500 Fillmore Street, San Francisco, CA 94123",
+    "lat": 37.8017317,
+    "lng": -122.4361238
   },
   {
     "id": 80,
     "name": "Marshall Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "1575 15th Street, San Francisco, CA 94103"
+    "address": "1575 15th Street, San Francisco, CA 94103",
+    "lat": 37.7664402,
+    "lng": -122.4189417
   },
   {
     "id": 81,
     "name": "McKinley Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1025 14th Street, San Francisco, CA 94114"
+    "address": "1025 14th Street, San Francisco, CA 94114",
+    "lat": 37.7671989,
+    "lng": -122.4358322
   },
   {
     "id": 82,
     "name": "Miraloma Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "175 Omar Way, San Francisco, CA 94127"
+    "address": "175 Omar Way, San Francisco, CA 94127",
+    "lat": 37.73883600000001,
+    "lng": -122.4502182
   },
   {
     "id": 83,
     "name": "Mission Bay School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K)",
-    "address": "1415 Owens Street, San Francisco, CA 94158"
+    "address": "1415 Owens Street, San Francisco, CA 94158",
+    "lat": 37.7698576,
+    "lng": -122.3952238
   },
   {
     "id": 84,
     "name": "Mission Education Center",
     "gradeLevels": "Elementary School (PreK, TK, K, 1-5)",
-    "address": "1670 Noe Street, San Francisco, CA 94131"
+    "address": "1670 Noe Street, San Francisco, CA 94131",
+    "lat": 37.742176,
+    "lng": -122.4313738
   },
   {
     "id": 85,
     "name": "Mission High School",
     "gradeLevels": "High School (9-13)",
-    "address": "3750 18th Street, San Francisco, CA 94114"
+    "address": "3750 18th Street, San Francisco, CA 94114",
+    "lat": 37.7617503,
+    "lng": -122.4271709
   },
   {
     "id": 86,
     "name": "Monroe Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "260 Madrid Street, San Francisco, CA 94112"
+    "address": "260 Madrid Street, San Francisco, CA 94112",
+    "lat": 37.7255673,
+    "lng": -122.4304005
   },
   {
     "id": 87,
     "name": "New Traditions Creative Arts Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "2049 Grove Street, San Francisco, CA 94117"
+    "address": "2049 Grove Street, San Francisco, CA 94117",
+    "lat": 37.7740028,
+    "lng": -122.4503157
   },
   {
     "id": 88,
     "name": "Noriega Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "1775 44th Avenue, San Francisco, CA 94122"
+    "address": "1775 44th Avenue, San Francisco, CA 94122",
+    "lat": 37.753544,
+    "lng": -122.5037248
   },
   {
     "id": 89,
     "name": "Paul Revere (PreK-8) School",
     "gradeLevels": "Early Education, Elementary School, K-8 School (PreK, TK, K, 1-8)",
-    "address": "555 Tompkins Avenue, San Francisco, CA 94110"
+    "address": "555 Tompkins Avenue, San Francisco, CA 94110",
+    "lat": 37.7373016,
+    "lng": -122.4131897
   },
   {
     "id": 90,
     "name": "Phillip and Sala Burton Academic High School",
     "gradeLevels": "High School (9-13)",
-    "address": "400 Mansell Street, San Francisco, CA 94134"
+    "address": "400 Mansell Street, San Francisco, CA 94134",
+    "lat": 37.7208058,
+    "lng": -122.4061513
   },
   {
     "id": 91,
     "name": "Presidio Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "450 30th Ave, San Francisco, CA 94121"
+    "address": "450 30th Ave, San Francisco, CA 94121",
+    "lat": 37.7812551,
+    "lng": -122.4898217
   },
   {
     "id": 92,
     "name": "Project Search",
     "gradeLevels": "County School (13)",
-    "address": "2425 Geary Blvd, San Francisco, CA 94115"
+    "address": "2425 Geary Blvd, San Francisco, CA 94115",
+    "lat": 37.7826471,
+    "lng": -122.4432378
   },
   {
     "id": 93,
     "name": "Raoul Wallenberg High School",
     "gradeLevels": "High School (9-13)",
-    "address": "40 Vega Street, San Francisco, CA 94115"
+    "address": "40 Vega Street, San Francisco, CA 94115",
+    "lat": 37.7802875,
+    "lng": -122.4462815
   },
   {
     "id": 94,
     "name": "Raphael Weill Early Education School",
     "gradeLevels": "Early Education (PreK)",
-    "address": "1501 O'Farrell Street, San Francisco, CA 94115"
+    "address": "1501 O'Farrell Street, San Francisco, CA 94115",
+    "lat": 37.7832752,
+    "lng": -122.4298692
   },
   {
     "id": 95,
     "name": "Redding Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "1421 Pine Street, San Francisco, CA 94109"
+    "address": "1421 Pine Street, San Francisco, CA 94109",
+    "lat": 37.789542,
+    "lng": -122.4189859
   },
   {
     "id": 96,
     "name": "Robert Louis Stevenson Elementary School",
     "gradeLevels": "Early Education, Elementary School (TK, K, 1-5)",
-    "address": "2051 34th Avenue, San Francisco, CA 94116"
+    "address": "2051 34th Avenue, San Francisco, CA 94116",
+    "lat": 37.7487212,
+    "lng": -122.4928957
   },
   {
     "id": 97,
     "name": "Rooftop School TK-8",
     "gradeLevels": "Elementary School, K-8 School (TK, K, 1-8)",
-    "address": "(TK-4 Twin Peaks Campus) 443 Burnett Avenue; (5-8 Mayeda Campus) 500 Corbett Avenue, San Francisco, CA 94131"
+    "address": "(TK-4 Twin Peaks Campus) 443 Burnett Avenue; (5-8 Mayeda Campus) 500 Corbett Avenue, San Francisco, CA 94131",
+    "lat": 37.7547589,
+    "lng": -122.443362
   },
   {
     "id": 98,
     "name": "Rooftop TK-8 School - Mayeda Campus",
     "gradeLevels": "Elementary School, K-8 School, Middle School (5-8)",
-    "address": "500 Corbett Avenue, San Francisco, CA 94114"
+    "address": "500 Corbett Avenue, San Francisco, CA 94114",
+    "lat": 37.7575757,
+    "lng": -122.4447333
   },
   {
     "id": 99,
     "name": "Roosevelt Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "460 Arguello Boulevard, San Francisco, CA 94118"
+    "address": "460 Arguello Boulevard, San Francisco, CA 94118",
+    "lat": 37.7818963,
+    "lng": -122.4586173
   },
   {
     "id": 100,
     "name": "Rosa Parks Elementary School",
     "gradeLevels": "Elementary School (PreK, TK, K, 1-5)",
-    "address": "1501 O'Farrell Street, San Francisco, CA 94115"
+    "address": "1501 O'Farrell Street, San Francisco, CA 94115",
+    "lat": 37.7832752,
+    "lng": -122.4298692
   },
   {
     "id": 101,
     "name": "Ruth Asawa San Francisco School of the Arts",
     "gradeLevels": "High School (9-12)",
-    "address": "555 Portola Drive, San Francisco, CA 94131"
+    "address": "555 Portola Drive, San Francisco, CA 94131",
+    "lat": 37.745398,
+    "lng": -122.4496631
   },
   {
     "id": 102,
     "name": "San Francisco Community School",
     "gradeLevels": "Elementary School, K-8 School, Middle School (TK, K, 1-8)",
-    "address": "125 Excelsior Avenue, San Francisco, CA 94112"
+    "address": "125 Excelsior Avenue, San Francisco, CA 94112",
+    "lat": 37.7260661,
+    "lng": -122.4321687
   },
   {
     "id": 103,
     "name": "San Francisco International High School",
     "gradeLevels": "High School (9-12)",
-    "address": "655 De Haro Street, San Francisco, CA 94107"
+    "address": "655 De Haro Street, San Francisco, CA 94107",
+    "lat": 37.7619783,
+    "lng": -122.4004544
   },
   {
     "id": 104,
     "name": "San Francisco Public Montessori",
     "gradeLevels": "Early Education, Elementary School (PreK, K, 1-5)",
-    "address": "2340 Jackson Street, San Francisco, CA 94115"
+    "address": "2340 Jackson Street, San Francisco, CA 94115",
+    "lat": 37.79294,
+    "lng": -122.4335857
   },
   {
     "id": 105,
     "name": "San Miguel Early Education School",
     "gradeLevels": "Early Education (PreK)",
-    "address": "300 Seneca Avenue, San Francisco, CA 94112"
+    "address": "300 Seneca Avenue, San Francisco, CA 94112",
+    "lat": 37.721258,
+    "lng": -122.4443613
   },
   {
     "id": 106,
     "name": "Sanchez Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "325 Sanchez Street, San Francisco, CA 94114"
+    "address": "325 Sanchez Street, San Francisco, CA 94114",
+    "lat": 37.76345999999999,
+    "lng": -122.4305466
   },
   {
     "id": 107,
     "name": "Sheridan Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "431 Capitol Avenue, San Francisco, CA 94112"
+    "address": "431 Capitol Avenue, San Francisco, CA 94112",
+    "lat": 37.7143746,
+    "lng": -122.459506
   },
   {
     "id": 108,
     "name": "Sherman Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1651 Union Street, San Francisco, CA 94123"
+    "address": "1651 Union Street, San Francisco, CA 94123",
+    "lat": 37.79781699999999,
+    "lng": -122.4261408
   },
   {
     "id": 109,
     "name": "Spring Valley Science Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1451 Jackson Street, San Francisco, CA 94109"
+    "address": "1451 Jackson Street, San Francisco, CA 94109",
+    "lat": 37.7938177,
+    "lng": -122.4188108
   },
   {
     "id": 110,
     "name": "Starr King Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "1215 Carolina Street, San Francisco, CA 94107"
+    "address": "1215 Carolina Street, San Francisco, CA 94107",
+    "lat": 37.7534685,
+    "lng": -122.3991181
   },
   {
     "id": 111,
     "name": "Sunnyside Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "250 Foerster Street, San Francisco, CA 94112"
+    "address": "250 Foerster Street, San Francisco, CA 94112",
+    "lat": 37.7302532,
+    "lng": -122.4486089
   },
   {
     "id": 112,
     "name": "Sunset Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "1920 41st Avenue, San Francisco, CA 94116"
+    "address": "1920 41st Avenue, San Francisco, CA 94116",
+    "lat": 37.750797,
+    "lng": -122.4987667
   },
   {
     "id": 113,
     "name": "Sutro Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "235 12th Avenue, San Francisco, CA 94118"
+    "address": "235 12th Avenue, San Francisco, CA 94118",
+    "lat": 37.7835573,
+    "lng": -122.4716684
   },
   {
     "id": 114,
     "name": "Tenderloin Community Elementary School",
     "gradeLevels": "Early Education, Elementary School (PreK, TK, K, 1-5)",
-    "address": "627 Turk Street, San Francisco, CA 94102"
+    "address": "627 Turk Street, San Francisco, CA 94102",
+    "lat": 37.7817847,
+    "lng": -122.4197403
   },
   {
     "id": 115,
     "name": "The Academy - San Francisco @ McAteer",
     "gradeLevels": "High School (9-12)",
-    "address": "555 Portola Drive, San Francisco, CA 94131"
+    "address": "555 Portola Drive, San Francisco, CA 94131",
+    "lat": 37.745398,
+    "lng": -122.4496631
   },
   {
     "id": 116,
     "name": "Theresa S. Mahler Early Education School",
     "gradeLevels": "Early Education (PreK)",
-    "address": "990 Church Street, San Francisco, CA 94114"
+    "address": "990 Church Street, San Francisco, CA 94114",
+    "lat": 37.7551545,
+    "lng": -122.4280752
   },
   {
     "id": 117,
     "name": "Thurgood Marshall Academic High School",
     "gradeLevels": "High School (9-13)",
-    "address": "45 Conkling Street, San Francisco, CA 94124"
+    "address": "45 Conkling Street, San Francisco, CA 94124",
+    "lat": 37.7361205,
+    "lng": -122.4018293
   },
   {
     "id": 118,
     "name": "Tule Elk Park Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "2110 Greenwich Street, San Francisco, CA 94123"
+    "address": "2110 Greenwich Street, San Francisco, CA 94123",
+    "lat": 37.7994031,
+    "lng": -122.4345409
   },
   {
     "id": 119,
     "name": "Ulloa Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "2650 42nd Avenue, San Francisco, CA 94116"
+    "address": "2650 42nd Avenue, San Francisco, CA 94116",
+    "lat": 37.7370391,
+    "lng": -122.4994365
   },
   {
     "id": 120,
     "name": "Visitacion Valley Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "55 Schwerin Street, San Francisco, CA 94134"
+    "address": "55 Schwerin Street, San Francisco, CA 94134",
+    "lat": 37.71249419999999,
+    "lng": -122.410262
   },
   {
     "id": 121,
     "name": "Visitacion Valley Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "1971 Visitacion Avenue, San Francisco, CA 94134"
+    "address": "1971 Visitacion Avenue, San Francisco, CA 94134",
+    "lat": 37.715819,
+    "lng": -122.4123048
   },
   {
     "id": 122,
     "name": "West Portal Elementary School",
     "gradeLevels": "Elementary School (TK, K, 1-5)",
-    "address": "5 Lenox Way, San Francisco, CA 94127"
+    "address": "5 Lenox Way, San Francisco, CA 94127",
+    "lat": 37.74297130000001,
+    "lng": -122.4642387
   },
   {
     "id": 123,
     "name": "Willie L. Brown Jr. Middle School",
     "gradeLevels": "Middle School (6-8)",
-    "address": "2055 Silver Avenue, San Francisco, CA 94124"
+    "address": "2055 Silver Avenue, San Francisco, CA 94124",
+    "lat": 37.7362819,
+    "lng": -122.3992977
   },
   {
     "id": 124,
     "name": "Woodside Learning Center",
     "gradeLevels": "County School (7-12)",
-    "address": "375 Woodside Avenue, Ste. 332, San Francisco, CA 94127"
+    "address": "375 Woodside Avenue, Ste. 332, San Francisco, CA 94127",
+    "lat": 37.7459622,
+    "lng": -122.4526728
   },
   {
     "id": 125,
     "name": "Yick Wo Alternative Elementary School",
     "gradeLevels": "Elementary School (K, 1-5)",
-    "address": "2245 Jones Street, San Francisco, CA 94133"
+    "address": "2245 Jones Street, San Francisco, CA 94133",
+    "lat": 37.8020872,
+    "lng": -122.4165524
   },
   {
     "id": 126,
     "name": "Youth Chance High School",
     "gradeLevels": "County School (11-12)",
-    "address": "169 Steuart Street, San Francisco, CA 94105"
+    "address": "169 Steuart Street, San Francisco, CA 94105",
+    "lat": 37.7926791,
+    "lng": -122.3919488
   },
   {
     "id": 127,
     "name": "Zaida T. Rodriguez Early Education School",
     "gradeLevels": "Early Education (PreK, TK)",
-    "address": "2950 Mission St (main); 421 Bartlett Ave (TK Campus), San Francisco, CA 94110"
+    "address": "2950 Mission St (main); 421 Bartlett Ave (TK Campus), San Francisco, CA 94110",
+    "lat": 37.7497941,
+    "lng": -122.4185197
   }
 ]

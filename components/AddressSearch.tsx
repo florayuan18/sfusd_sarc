@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { loadGoogleMaps } from "@/lib/googleMaps";
@@ -18,6 +18,9 @@ export function AddressSearch({
   onSearch
 }: AddressSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [autocompleteError, setAutocompleteError] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     let autocomplete: google.maps.places.Autocomplete | undefined;
@@ -27,8 +30,13 @@ export function AddressSearch({
     loadGoogleMaps()
       .then((google) => {
         if (!isMounted || !inputRef.current || !google.maps.places) {
+          setAutocompleteError(
+            "Address suggestions are unavailable. Check that Places API is enabled for the browser key."
+          );
           return;
         }
+
+        setAutocompleteError(null);
 
         autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
           componentRestrictions: {
@@ -60,8 +68,12 @@ export function AddressSearch({
           });
         });
       })
-      .catch(() => {
-        // The map panel already explains missing/invalid Maps setup.
+      .catch((error) => {
+        setAutocompleteError(
+          error instanceof Error
+            ? error.message
+            : "Address suggestions are unavailable."
+        );
       });
 
     return () => {
@@ -95,6 +107,11 @@ export function AddressSearch({
           Search
         </Button>
       </div>
+      {autocompleteError ? (
+        <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          {autocompleteError}
+        </div>
+      ) : null}
       <button
         type="button"
         disabled

@@ -6,6 +6,7 @@ import type {
 } from "@/types/school";
 
 type RouteTravelMode = "DRIVE" | "WALK" | "TRANSIT";
+type RouteTravelModeWithBicycle = RouteTravelMode | "BICYCLE";
 
 type RouteMatrixElement = {
   destinationIndex?: number;
@@ -20,9 +21,10 @@ type RouteMatrixElement = {
 
 const ROUTES_API_URL =
   "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix";
+const COMPUTE_ROUTES_API_URL =
+  "https://routes.googleapis.com/directions/v2:computeRoutes";
 const ROUTE_BATCH_SIZE = 25;
 const METERS_PER_MILE = 1609.344;
-const BIKE_MILES_PER_HOUR = 10;
 
 export type ComputeCommuteParams = {
   origin: Coordinates;
@@ -47,15 +49,17 @@ export async function computeCommutes({
   });
 
   for (const batch of destinationBatches) {
-    const [driving, walking, transit] = await Promise.all([
+    const [driving, walking, transit, bicycling] = await Promise.all([
       fetchRouteMatrix({ origin, destinations: batch, travelMode: "DRIVE" }),
       fetchRouteMatrix({ origin, destinations: batch, travelMode: "WALK" }),
-      fetchRouteMatrix({ origin, destinations: batch, travelMode: "TRANSIT" })
+      fetchRouteMatrix({ origin, destinations: batch, travelMode: "TRANSIT" }),
+      fetchBicyclingRoutes({ origin, destinations: batch })
     ]);
 
     mergeRouteResults(results, batch, driving, "drivingMinutes");
     mergeRouteResults(results, batch, walking, "walkingMinutes");
     mergeRouteResults(results, batch, transit, "transitMinutes");
+    mergeBicyclingResults(results, batch, bicycling);
 
     batch.forEach((destination) => {
       const result = results.get(destination.schoolId);
@@ -64,7 +68,6 @@ export async function computeCommutes({
         return;
       }
 
-      result.bikingMinutes = estimateBikingMinutes(result.distanceMiles);
       result.commuteFit = getCommuteFit(result);
     });
   }
@@ -186,7 +189,21 @@ async function fetchRouteMatrix({
       destinations: destinations.map((destination) =>
         toRouteWaypoint(destination.coordinates)
       ),
-      travelMode
+      travelMode,
+      ...(travelMode === "DRIVE"
+        ? {
+            routingPreference: "TRAFFIC_AWARE"
+          }
+        : {}),
+      ...(travelMode === "TRANSIT"
+        ? {
+            departureTime: new Date().toISOString(),
+            transitPreferences: {
+              allowedTravelModes: ["BUS", "SUBWAY", "TRAIN", "LIGHT_RAIL"],
+              routingPreference: "FEWER_TRANSFERS"
+            }
+          }
+        : {})
     })
   });
 
@@ -196,6 +213,68 @@ async function fetchRouteMatrix({
   }
 
   return (await response.json()) as RouteMatrixElement[];
+}
+
+async function fetchBicyclingRoutes({
+  origin,
+  destinations
+}: ComputeCommuteParams) {
+  return Promise.all(
+    destinations.map(async (destination) => {
+      const route = await fetchRoute({
+        destination: destination.coordinates,
+        origin,
+        travelMode: "BICYCLE"
+      });
+
+      return {
+        route,
+        schoolId: destination.schoolId
+      };
+    })
+  );
+}
+
+async function fetchRoute({
+  destination,
+  origin,
+  travelMode
+}: {
+  destination: Coordinates;
+  origin: Coordinates;
+  travelMode: RouteTravelModeWithBicycle;
+}) {
+  const apiKey = process.env.GOOGLE_MAPS_SERVER_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Missing GOOGLE_MAPS_SERVER_API_KEY.");
+  }
+
+  const response = await fetch(COMPUTE_ROUTES_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": apiKey,
+      "X-Goog-FieldMask": "routes.duration,routes.distanceMeters"
+    },
+    body: JSON.stringify({
+      origin: toRouteWaypoint(origin).waypoint,
+      destination: toRouteWaypoint(destination).waypoint,
+      travelMode
+    })
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(`Compute Routes failed: ${response.status} ${message}`);
+  }
+
+  return (await response.json()) as {
+    routes?: Array<{
+      distanceMeters?: number;
+      duration?: string;
+    }>;
+  };
 }
 
 function toRouteWaypoint(coordinates: Coordinates) {
@@ -211,8 +290,43 @@ function toRouteWaypoint(coordinates: Coordinates) {
   };
 }
 
+function mergeBicyclingResults(
+  results: Map<string, CommuteResult>,
+  destinations: CommuteDestination[],
+  bicyclingRoutes: Array<{
+    route: {
+      routes?: Array<{
+        distanceMeters?: number;
+        duration?: string;
+      }>;
+    };
+    schoolId: string;
+  }>
+) {
+  destinations.forEach((destination) => {
+    const bicyclingResult = bicyclingRoutes.find(
+      (route) => route.schoolId === destination.schoolId
+    );
+    const route = bicyclingResult?.route.routes?.[0];
+    const result = results.get(destination.schoolId);
+
+    if (!route || !result) {
+      return;
+    }
+
+    result.bikingMinutes = parseDurationMinutes(route.duration);
+
+    if (result.distanceMiles === null && typeof route.distanceMeters === "number") {
+      result.distanceMiles = metersToMiles(route.distanceMeters);
+    }
+  });
+}
+
 function isSuccessfulRouteElement(element: RouteMatrixElement) {
-  const okStatus = !element.status || element.status.code === 0;
+  const okStatus =
+    !element.status ||
+    typeof element.status.code !== "number" ||
+    element.status.code === 0;
   const reachable =
     !element.condition || element.condition === "ROUTE_EXISTS";
 
@@ -235,14 +349,6 @@ function parseDurationMinutes(duration: string | undefined) {
 
 function metersToMiles(meters: number) {
   return Number((meters / METERS_PER_MILE).toFixed(1));
-}
-
-function estimateBikingMinutes(distanceMiles: number | null) {
-  if (distanceMiles === null) {
-    return null;
-  }
-
-  return Math.max(1, Math.round((distanceMiles / BIKE_MILES_PER_HOUR) * 60));
 }
 
 function chunk<T>(items: T[], size: number) {
