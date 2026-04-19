@@ -94,6 +94,19 @@ export function useSarcNavigator() {
     []
   );
 
+  const submitCurrentLocation = useCallback(
+    (value: string, coordinates: Coordinates) => {
+      setAddress(value);
+      setSubmittedAddress(value);
+      setHomeCoordinates(coordinates);
+      setHasSearched(true);
+      setSelectedFilter("all");
+      setSelectedSchool(undefined);
+      setShouldPanToSelectedSchool(false);
+    },
+    []
+  );
+
   const selectFilter = useCallback((filter: SchoolFilter) => {
     setSelectedFilter(filter);
     setSelectedSchool(undefined);
@@ -142,6 +155,7 @@ export function useSarcNavigator() {
     selectFilter,
     selectAddressSuggestion,
     selectSchool,
+    submitCurrentLocation,
     shouldPanToSelectedSchool,
     setAddress: updateAddress,
     setHomeCoordinates,

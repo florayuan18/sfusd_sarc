@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { reverseGeocodeCoordinates } from "@/lib/geocode";
 import { loadGoogleMaps } from "@/lib/googleMaps";
 import type { Coordinates } from "@/types/school";
 
@@ -9,18 +10,24 @@ type AddressSearchProps = {
   onAddressChange: (value: string) => void;
   onAddressSelect: (address: string, coordinates: Coordinates) => void;
   onSearch: () => void;
+  onUseCurrentLocation: (address: string, coordinates: Coordinates) => void;
 };
 
 export function AddressSearch({
   address,
   onAddressChange,
   onAddressSelect,
-  onSearch
+  onSearch,
+  onUseCurrentLocation
 }: AddressSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocompleteError, setAutocompleteError] = useState<string | null>(
     null
   );
+  const [currentLocationError, setCurrentLocationError] = useState<
+    string | null
+  >(null);
+  const [isUsingCurrentLocation, setIsUsingCurrentLocation] = useState(false);
 
   useEffect(() => {
     let autocomplete: google.maps.places.Autocomplete | undefined;
@@ -82,6 +89,50 @@ export function AddressSearch({
     };
   }, [onAddressSelect]);
 
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setCurrentLocationError(
+        "Current location is unavailable in this browser."
+      );
+      return;
+    }
+
+    setIsUsingCurrentLocation(true);
+    setCurrentLocationError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const coordinates = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        const resolvedAddress =
+          (await reverseGeocodeCoordinates(coordinates)) || "Current location";
+
+        onUseCurrentLocation(resolvedAddress, coordinates);
+        setIsUsingCurrentLocation(false);
+      },
+      (error) => {
+        const messageByCode: Record<number, string> = {
+          1: "Location permission was denied.",
+          2: "Current location could not be determined.",
+          3: "Current location request timed out."
+        };
+
+        setCurrentLocationError(
+          messageByCode[error.code] || "Unable to access current location."
+        );
+        setIsUsingCurrentLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000
+      }
+    );
+  };
+
   return (
     <Card className="p-5 md:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end">
@@ -114,12 +165,18 @@ export function AddressSearch({
       ) : null}
       <button
         type="button"
-        disabled
-        className="mt-3 text-sm font-medium text-slate-400"
-        aria-disabled="true"
+        onClick={handleUseCurrentLocation}
+        disabled={isUsingCurrentLocation}
+        className="mt-3 text-sm font-medium text-accent transition hover:text-blue-700 disabled:cursor-not-allowed disabled:text-slate-400"
+        aria-disabled={isUsingCurrentLocation}
       >
-        Use current location
+        {isUsingCurrentLocation ? "Finding current location..." : "Use current location"}
       </button>
+      {currentLocationError ? (
+        <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          {currentLocationError}
+        </div>
+      ) : null}
     </Card>
   );
 }

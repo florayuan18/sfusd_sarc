@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type {
   CommuteResultsBySchoolId,
   Coordinates,
@@ -32,6 +33,19 @@ export function NearbySchoolsList({
   selectedSchoolId,
   onSelectSchool
 }: NearbySchoolsListProps) {
+  const schoolItemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useEffect(() => {
+    if (!selectedSchoolId) {
+      return;
+    }
+
+    schoolItemRefs.current[selectedSchoolId]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }, [selectedSchoolId]);
+
   return (
     <Card className="p-5">
       <div className="mb-4 flex items-center justify-between">
@@ -61,6 +75,9 @@ export function NearbySchoolsList({
           return (
             <button
               key={school.id}
+              ref={(element) => {
+                schoolItemRefs.current[school.id] = element;
+              }}
               type="button"
               onClick={() => onSelectSchool(school)}
               className={cn(

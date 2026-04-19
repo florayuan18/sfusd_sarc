@@ -8,6 +8,28 @@ export function geocodeHomeAddress(address: string) {
   return geocodeAddress(formatSfAddress(address));
 }
 
+export async function reverseGeocodeCoordinates(
+  coordinates: Coordinates
+): Promise<string | null> {
+  return loadGoogleMaps()
+    .then(
+      (google) =>
+        new Promise<string | null>((resolve) => {
+          const geocoder = new google.maps.Geocoder();
+
+          geocoder.geocode({ location: coordinates }, (results, status) => {
+            if (status !== google.maps.GeocoderStatus.OK || !results?.[0]) {
+              resolve(null);
+              return;
+            }
+
+            resolve(results[0].formatted_address ?? null);
+          });
+        })
+    )
+    .catch(() => null);
+}
+
 export async function geocodeHomeAddressViaApi(address: string) {
   const response = await fetch("/api/geocode", {
     method: "POST",

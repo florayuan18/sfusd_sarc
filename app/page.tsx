@@ -23,6 +23,7 @@ export default function Home() {
             onAddressChange={navigator.setAddress}
             onAddressSelect={navigator.selectAddressSuggestion}
             onSearch={navigator.search}
+            onUseCurrentLocation={navigator.submitCurrentLocation}
           />
 
           {!navigator.hasSearched ? (
