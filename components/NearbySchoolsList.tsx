@@ -3,6 +3,7 @@ import type {
   CommuteResultsBySchoolId,
   Coordinates,
   CoordinatesBySchoolId,
+  SearchMode,
   School
 } from "@/types/school";
 import { cn } from "@/lib/classNames";
@@ -13,9 +14,12 @@ import {
 } from "@/lib/schoolUtils";
 
 type NearbySchoolsListProps = {
+  centerCoordinates?: Coordinates;
+  centerSchool?: School;
   commuteResults: CommuteResultsBySchoolId;
   homeCoordinates?: Coordinates;
   isLoadingCommute?: boolean;
+  searchMode: SearchMode;
   schoolNumberMap: Record<string, number>;
   schoolCoordinatesMap: CoordinatesBySchoolId;
   schools: School[];
@@ -24,15 +28,19 @@ type NearbySchoolsListProps = {
 };
 
 export function NearbySchoolsList({
+  centerCoordinates,
+  centerSchool,
   commuteResults,
   homeCoordinates,
   isLoadingCommute = false,
+  searchMode,
   schoolNumberMap,
   schoolCoordinatesMap,
   schools,
   selectedSchoolId,
   onSelectSchool
 }: NearbySchoolsListProps) {
+  const listContainerRef = useRef<HTMLDivElement>(null);
   const schoolItemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
@@ -40,17 +48,27 @@ export function NearbySchoolsList({
       return;
     }
 
-    schoolItemRefs.current[selectedSchoolId]?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
+    const selectedSchoolElement = schoolItemRefs.current[selectedSchoolId];
+
+    if (!selectedSchoolElement) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      selectedSchoolElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     });
   }, [selectedSchoolId]);
 
   return (
-    <Card className="p-5">
+    <Card className="flex h-full min-h-0 flex-col p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-950">
-          Nearby schools
+          {searchMode === "school" && centerSchool
+            ? `Schools near ${centerSchool.name}`
+            : "Nearby schools"}
         </h2>
         <span className="text-sm text-slate-500">{schools.length} in radius</span>
       </div>
@@ -61,16 +79,24 @@ export function NearbySchoolsList({
         </div>
       ) : null}
 
-      <div className="space-y-2">
+      <div
+        ref={listContainerRef}
+        className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1"
+      >
+        {schools.length === 0 ? (
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-600">
+            No schools match this radius and type.
+          </div>
+        ) : null}
+
         {schools.map((school) => {
           const isSelected = school.id === selectedSchoolId;
           const commuteResult = commuteResults[school.id];
           const distanceMiles = getDistanceMilesBetweenCoordinates(
-            homeCoordinates,
+            searchMode === "school" ? centerCoordinates : homeCoordinates,
             schoolCoordinatesMap[school.id]
           );
-          const commuteMinutes =
-            commuteResult?.transitMinutes ?? school.commute.transitMinutes;
+          const commuteMinutes = commuteResult?.transitMinutes;
 
           return (
             <button
@@ -79,7 +105,9 @@ export function NearbySchoolsList({
                 schoolItemRefs.current[school.id] = element;
               }}
               type="button"
-              onClick={() => onSelectSchool(school)}
+              onClick={() => {
+                onSelectSchool(school);
+              }}
               className={cn(
                 "w-full rounded-xl border p-4 text-left transition",
                 isSelected
@@ -114,7 +142,9 @@ export function NearbySchoolsList({
                   </div>
                 </div>
                 <div className="shrink-0 rounded-full bg-white px-3 py-1 text-sm font-semibold text-slate-700 shadow-sm">
-                  {commuteMinutes} min
+                  {typeof commuteMinutes === "number"
+                    ? `${commuteMinutes} min`
+                    : "—"}
                 </div>
               </div>
             </button>

@@ -29,6 +29,10 @@ export const SCHOOL_TYPE_LABELS: Record<SchoolType, string> = {
   other: "Other"
 };
 
+export const normalizeSchoolType = getSchoolTypeFromGradeLevels;
+export const filterSchoolsByType = getFilteredSchools;
+export const calculateDistanceMiles = getDistanceMilesBetweenCoordinates;
+
 export function normalizeSchools(
   rawSchools: readonly RawSfusdSchool[]
 ): School[] {
@@ -176,6 +180,30 @@ export function getNearbySchoolsInRadius({
         getDistanceMilesBetweenCoordinates(homeCoordinates, coordinatesB)
       );
     });
+}
+
+export function filterSchoolsWithinRadius({
+  centerCoordinates,
+  radiusMeters,
+  schoolCoordinatesMap,
+  schools
+}: {
+  centerCoordinates?: Coordinates;
+  radiusMeters: number;
+  schoolCoordinatesMap: Record<string, Coordinates>;
+  schools: School[];
+}) {
+  if (!centerCoordinates) {
+    return [];
+  }
+
+  return schools.filter((school) =>
+    isSchoolWithinRadius({
+      homeCoordinates: centerCoordinates,
+      radiusMeters,
+      schoolCoordinates: schoolCoordinatesMap[school.id]
+    })
+  );
 }
 
 function normalizeGradeLevels(gradeLevels: RawSfusdSchool["gradeLevels"]) {

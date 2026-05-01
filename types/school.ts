@@ -11,6 +11,8 @@ export type CoordinatesBySchoolId = Record<string, Coordinates>;
 
 export type RadiusMinutes = 10 | 20 | 30;
 
+export type SearchMode = "address" | "school";
+
 export type CommuteFit = "High" | "Medium" | "Low";
 
 export type CommuteMode = "transit" | "driving" | "walking" | "biking";

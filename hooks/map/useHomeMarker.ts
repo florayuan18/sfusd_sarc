@@ -7,6 +7,7 @@ import type { MapStatus } from "@/types/map";
 import type { Coordinates, RadiusMinutes } from "@/types/school";
 
 type UseHomeMarkerParams = {
+  circleCenterCoordinates?: Coordinates;
   homeCoordinates?: Coordinates;
   mapRef: React.MutableRefObject<google.maps.Map | undefined>;
   mapStatus: MapStatus;
@@ -14,6 +15,7 @@ type UseHomeMarkerParams = {
 };
 
 export function useHomeMarker({
+  circleCenterCoordinates,
   homeCoordinates,
   mapRef,
   mapStatus,
@@ -23,7 +25,7 @@ export function useHomeMarker({
   const radiusCircleRef = useRef<google.maps.Circle>();
 
   useEffect(() => {
-    if (mapStatus !== "ready" || !homeCoordinates) {
+    if (mapStatus !== "ready" || (!homeCoordinates && !circleCenterCoordinates)) {
       return;
     }
 
@@ -34,7 +36,7 @@ export function useHomeMarker({
       return;
     }
 
-    if (!homeMarkerRef.current) {
+    if (homeCoordinates && !homeMarkerRef.current) {
       homeMarkerRef.current = new google.maps.Marker({
         map,
         title: "Home",
@@ -43,7 +45,14 @@ export function useHomeMarker({
       });
     }
 
-    homeMarkerRef.current.setPosition(homeCoordinates);
+    if (homeMarkerRef.current) {
+      if (homeCoordinates) {
+        homeMarkerRef.current.setMap(map);
+        homeMarkerRef.current.setPosition(homeCoordinates);
+      } else {
+        homeMarkerRef.current.setMap(null);
+      }
+    }
 
     if (!radiusCircleRef.current) {
       radiusCircleRef.current = new google.maps.Circle({
@@ -56,7 +65,15 @@ export function useHomeMarker({
       });
     }
 
-    radiusCircleRef.current.setCenter(homeCoordinates);
+    radiusCircleRef.current.setCenter(
+      circleCenterCoordinates ?? homeCoordinates ?? null
+    );
     radiusCircleRef.current.setRadius(RADIUS_METERS_BY_MINUTES[radiusMinutes]);
-  }, [homeCoordinates, mapRef, mapStatus, radiusMinutes]);
+  }, [
+    circleCenterCoordinates,
+    homeCoordinates,
+    mapRef,
+    mapStatus,
+    radiusMinutes
+  ]);
 }

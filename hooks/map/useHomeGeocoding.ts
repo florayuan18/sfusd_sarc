@@ -6,6 +6,7 @@ import type { HomeGeocodeStatus, MapStatus } from "@/types/map";
 import type { Coordinates } from "@/types/school";
 
 type UseHomeGeocodingParams = {
+  hasSearched: boolean;
   homeAddress: string;
   homeCoordinates?: Coordinates;
   mapRef: React.MutableRefObject<google.maps.Map | undefined>;
@@ -14,6 +15,7 @@ type UseHomeGeocodingParams = {
 };
 
 export function useHomeGeocoding({
+  hasSearched,
   homeAddress,
   homeCoordinates,
   mapRef,
@@ -25,6 +27,11 @@ export function useHomeGeocoding({
 
   useEffect(() => {
     if (mapStatus !== "ready") {
+      return;
+    }
+
+    if (!hasSearched && !homeCoordinates) {
+      setHomeGeocodeStatus("idle");
       return;
     }
 
@@ -67,6 +74,7 @@ export function useHomeGeocoding({
       isMounted = false;
     };
   }, [
+    hasSearched,
     homeAddress,
     homeCoordinates,
     mapRef,

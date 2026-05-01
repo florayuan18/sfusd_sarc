@@ -11,6 +11,8 @@ import type { MapStatus } from "@/types/map";
 import type { Coordinates, CoordinatesBySchoolId, School } from "@/types/school";
 
 type UseSchoolMarkersParams = {
+  centerCoordinates?: Coordinates;
+  centerSchoolId?: string;
   filteredSchoolIds: Set<string>;
   homeCoordinates?: Coordinates;
   infoWindowRef: React.MutableRefObject<google.maps.InfoWindow | undefined>;
@@ -26,6 +28,8 @@ type UseSchoolMarkersParams = {
 };
 
 export function useSchoolMarkers({
+  centerCoordinates,
+  centerSchoolId,
   filteredSchoolIds,
   homeCoordinates,
   infoWindowRef,
@@ -61,6 +65,45 @@ export function useSchoolMarkers({
     () => schools.filter((school) => schoolCoordinatesMap[school.id]).length,
     [schoolCoordinatesMap, schools]
   );
+  const visibleSchoolCoordinates = useMemo(
+    () =>
+      schools
+        .filter((school) => {
+          const coordinates = schoolCoordinatesMap[school.id];
+
+          if (!coordinates) {
+            return false;
+          }
+
+          const isSelected = selectedSchoolId === school.id;
+          const isCenterSchool = centerSchoolId === school.id;
+          const matchesFilter = filteredSchoolIds.has(school.id);
+
+          if (!matchesFilter && !isSelected && !isCenterSchool) {
+            return false;
+          }
+
+          return (
+            isSelected ||
+            isCenterSchool ||
+            isSchoolWithinRadius({
+              homeCoordinates: centerCoordinates ?? homeCoordinates,
+              radiusMeters,
+              schoolCoordinates: coordinates
+            })
+          );
+        })
+        .map((school) => schoolCoordinatesMap[school.id]),
+    [
+      centerCoordinates,
+      filteredSchoolIds,
+      homeCoordinates,
+      radiusMeters,
+      schoolCoordinatesMap,
+      schools,
+      selectedSchoolId
+    ]
+  );
 
   useEffect(() => {
     if (mapStatus !== "ready") {
@@ -87,18 +130,21 @@ export function useSchoolMarkers({
         return;
       }
 
-      if (!filteredSchoolIds.has(school.id)) {
+      const isSelected = selectedSchoolId === school.id;
+      const isCenterSchool = centerSchoolId === school.id;
+      const matchesFilter = filteredSchoolIds.has(school.id);
+
+      if (!matchesFilter && !isSelected && !isCenterSchool) {
         return;
       }
 
-      const isSelected = selectedSchoolId === school.id;
       const isWithinRadius = isSchoolWithinRadius({
-        homeCoordinates,
+        homeCoordinates: centerCoordinates ?? homeCoordinates,
         radiusMeters,
         schoolCoordinates: coordinates
       });
 
-      if (!isWithinRadius) {
+      if (!isWithinRadius && !isSelected && !isCenterSchool) {
         return;
       }
 
@@ -111,7 +157,7 @@ export function useSchoolMarkers({
           : SCHOOL_MARKER_Z_INDEX,
         icon: getSchoolMarkerIcon(google, {
           schoolType: school.type,
-          isSelected,
+          isSelected: isSelected || isCenterSchool,
           isWithinRadius
         }),
         label: {
@@ -134,7 +180,7 @@ export function useSchoolMarkers({
       });
       marker.addListener("mouseover", () => {
         infoWindow.setContent(
-          `<div style="font-weight:600;color:#111827;">${schoolNumberMap[school.id] ? `${schoolNumberMap[school.id]}. ` : ""}${school.name}</div><div style="margin-top:4px;font-size:12px;color:#475569;">Within radius</div>`
+          `<div style="font-weight:600;color:#111827;">${schoolNumberMap[school.id] ? `${schoolNumberMap[school.id]}. ` : ""}${school.name}</div><div style="margin-top:4px;font-size:12px;color:#475569;">${isWithinRadius ? "Within radius" : "Outside current radius"}</div>`
         );
         infoWindow.open({
           anchor: marker,
@@ -151,6 +197,8 @@ export function useSchoolMarkers({
       markerMap.clear();
     };
   }, [
+    centerCoordinates,
+    centerSchoolId,
     filteredSchoolIds,
     homeCoordinates,
     infoWindowRef,
@@ -204,6 +252,48 @@ export function useSchoolMarkers({
     schools,
     selectedSchoolId,
     shouldPanToSelectedSchool
+  ]);
+
+  useEffect(() => {
+    if (
+      mapStatus !== "ready" ||
+      !(centerCoordinates ?? homeCoordinates) ||
+      !mapRef.current ||
+      shouldPanToSelectedSchool
+    ) {
+      return;
+    }
+
+    const google = window.google;
+    const bounds = new google.maps.LatLngBounds();
+
+    bounds.extend(centerCoordinates ?? homeCoordinates!);
+
+    visibleSchoolCoordinates.forEach((coordinates) => {
+      if (coordinates) {
+        bounds.extend(coordinates);
+      }
+    });
+
+    if (visibleSchoolCoordinates.length === 0) {
+      mapRef.current.setCenter(centerCoordinates ?? homeCoordinates!);
+      mapRef.current.setZoom(14);
+      return;
+    }
+
+    mapRef.current.fitBounds(bounds, {
+      top: 72,
+      right: 72,
+      bottom: 72,
+      left: 72
+    });
+  }, [
+    centerCoordinates,
+    homeCoordinates,
+    mapRef,
+    mapStatus,
+    shouldPanToSelectedSchool,
+    visibleSchoolCoordinates
   ]);
 
   return resolvedMarkerCount;

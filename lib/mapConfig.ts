@@ -8,9 +8,9 @@ export const SAN_FRANCISCO_CIVIC_CENTER: Coordinates = {
 export const RADIUS_OPTIONS: RadiusMinutes[] = [10, 20, 30];
 
 export const RADIUS_METERS_BY_MINUTES: Record<RadiusMinutes, number> = {
-  10: 800,
-  20: 1600,
-  30: 2400
+  10: 1609,
+  20: 3219,
+  30: 4828
 };
 
 export const MAP_OPTIONS: google.maps.MapOptions = {

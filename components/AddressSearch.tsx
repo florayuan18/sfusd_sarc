@@ -1,26 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { SchoolSearch } from "@/components/SchoolSearch";
 import { reverseGeocodeCoordinates } from "@/lib/geocode";
 import { loadGoogleMaps } from "@/lib/googleMaps";
-import type { Coordinates } from "@/types/school";
+import type { Coordinates, School } from "@/types/school";
 
 type AddressSearchProps = {
   address: string;
+  isSchoolDropdownOpen: boolean;
   onAddressChange: (value: string) => void;
   onAddressSelect: (address: string, coordinates: Coordinates) => void;
-  onSearch: () => void;
+  onSearch: (address: string) => void;
+  onSchoolDropdownOpenChange: (isOpen: boolean) => void;
+  onSchoolQueryChange: (value: string) => void;
+  onSchoolSelect: (school: School) => void;
   onUseCurrentLocation: (address: string, coordinates: Coordinates) => void;
+  schoolQuery: string;
+  schoolSuggestions: School[];
+  centerSchool?: School;
 };
 
 export function AddressSearch({
   address,
+  isSchoolDropdownOpen,
   onAddressChange,
   onAddressSelect,
   onSearch,
-  onUseCurrentLocation
+  onSchoolDropdownOpenChange,
+  onSchoolQueryChange,
+  onSchoolSelect,
+  onUseCurrentLocation,
+  schoolQuery,
+  schoolSuggestions,
+  centerSchool
 }: AddressSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [draftAddress, setDraftAddress] = useState(address);
   const [autocompleteError, setAutocompleteError] = useState<string | null>(
     null
   );
@@ -28,6 +44,10 @@ export function AddressSearch({
     string | null
   >(null);
   const [isUsingCurrentLocation, setIsUsingCurrentLocation] = useState(false);
+
+  useEffect(() => {
+    setDraftAddress(address);
+  }, [address]);
 
   useEffect(() => {
     let autocomplete: google.maps.places.Autocomplete | undefined;
@@ -69,7 +89,10 @@ export function AddressSearch({
             return;
           }
 
-          onAddressSelect(place.formatted_address || place.name || "", {
+          const resolvedAddress = place.formatted_address || place.name || "";
+
+          setDraftAddress(resolvedAddress);
+          onAddressSelect(resolvedAddress, {
             lat: location.lat(),
             lng: location.lng()
           });
@@ -110,6 +133,7 @@ export function AddressSearch({
         const resolvedAddress =
           (await reverseGeocodeCoordinates(coordinates)) || "Current location";
 
+        setDraftAddress(resolvedAddress);
         onUseCurrentLocation(resolvedAddress, coordinates);
         setIsUsingCurrentLocation(false);
       },
@@ -133,6 +157,10 @@ export function AddressSearch({
     );
   };
 
+  const handleSearch = () => {
+    onSearch(draftAddress);
+  };
+
   return (
     <Card className="p-5 md:p-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end">
@@ -143,18 +171,18 @@ export function AddressSearch({
           <input
             ref={inputRef}
             type="text"
-            value={address}
-            onChange={(event) => onAddressChange(event.target.value)}
+            value={draftAddress}
+            onChange={(event) => setDraftAddress(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
-                onSearch();
+                handleSearch();
               }
             }}
             placeholder="1234 Mission St, San Francisco, CA"
             className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-accent focus:ring-4 focus:ring-blue-100"
           />
         </label>
-        <Button size="lg" onClick={onSearch}>
+        <Button size="lg" onClick={handleSearch}>
           Search
         </Button>
       </div>
@@ -177,6 +205,18 @@ export function AddressSearch({
           {currentLocationError}
         </div>
       ) : null}
+
+      <div className="mt-5">
+        <SchoolSearch
+          isDropdownOpen={isSchoolDropdownOpen}
+          onDropdownOpenChange={onSchoolDropdownOpenChange}
+          onQueryChange={onSchoolQueryChange}
+          onSelectSchool={onSchoolSelect}
+          query={schoolQuery}
+          selectedSchool={centerSchool}
+          suggestions={schoolSuggestions}
+        />
+      </div>
     </Card>
   );
 }

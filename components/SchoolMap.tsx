@@ -13,14 +13,19 @@ import type {
   Coordinates,
   CoordinatesBySchoolId,
   RadiusMinutes,
+  SearchMode,
   School
 } from "@/types/school";
 
 type SchoolMapProps = {
+  centerCoordinates?: Coordinates;
+  centerSchoolId?: string;
+  hasSearched: boolean;
   homeAddress: string;
   homeCoordinates?: Coordinates;
   filteredSchoolIds: Set<string>;
   radiusMinutes: RadiusMinutes;
+  searchMode?: SearchMode;
   schoolNumberMap: Record<string, number>;
   schools: School[];
   schoolCoordinatesMap: CoordinatesBySchoolId;
@@ -36,10 +41,14 @@ type SchoolMapProps = {
 };
 
 export function SchoolMap({
+  centerCoordinates,
+  centerSchoolId,
+  hasSearched,
   homeAddress,
   homeCoordinates,
   filteredSchoolIds,
   radiusMinutes,
+  searchMode = "address",
   schoolNumberMap,
   schools,
   schoolCoordinatesMap,
@@ -52,6 +61,7 @@ export function SchoolMap({
 }: SchoolMapProps) {
   const { infoWindowRef, mapContainerRef, mapRef, mapStatus } = useGoogleMap();
   const homeGeocodeStatus = useHomeGeocoding({
+    hasSearched,
     homeAddress,
     homeCoordinates,
     mapRef,
@@ -65,6 +75,8 @@ export function SchoolMap({
     onSchoolCoordinatesResolved
   });
   const resolvedMarkerCount = useSchoolMarkers({
+    centerCoordinates,
+    centerSchoolId,
     filteredSchoolIds,
     homeCoordinates,
     infoWindowRef,
@@ -80,6 +92,10 @@ export function SchoolMap({
   });
 
   useHomeMarker({
+    circleCenterCoordinates:
+      searchMode === "school" && centerCoordinates
+        ? centerCoordinates
+        : homeCoordinates,
     homeCoordinates,
     mapRef,
     mapStatus,
@@ -87,7 +103,7 @@ export function SchoolMap({
   });
 
   return (
-    <section className="relative h-[500px] min-h-[440px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-soft lg:h-[70vh] lg:max-h-[640px] lg:min-h-[480px]">
+    <section className="relative h-[620px] min-h-[560px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-soft lg:h-[82vh] lg:max-h-[800px] lg:min-h-[640px]">
       <div ref={mapContainerRef} className="absolute inset-0" />
 
       {mapStatus !== "ready" ? (

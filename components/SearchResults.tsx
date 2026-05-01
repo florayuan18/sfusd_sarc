@@ -7,6 +7,7 @@ import type {
   Coordinates,
   CoordinatesBySchoolId,
   RadiusMinutes,
+  SearchMode,
   School,
   SchoolCounts,
   SchoolFilter
@@ -14,10 +15,14 @@ import type {
 
 type SearchResultsProps = {
   activeSchool?: School;
+  centerCoordinates?: Coordinates;
+  centerSchool?: School;
   commuteError: string | null;
   commuteResults: CommuteResultsBySchoolId;
   counts: SchoolCounts;
   filteredSchools: School[];
+  hasSearched: boolean;
+  searchMode: SearchMode;
   mapSchools: School[];
   homeAddress: string;
   homeCoordinates?: Coordinates;
@@ -39,10 +44,14 @@ type SearchResultsProps = {
 
 export function SearchResults({
   activeSchool,
+  centerCoordinates,
+  centerSchool,
   commuteError,
   commuteResults,
   counts,
   filteredSchools,
+  hasSearched,
+  searchMode,
   mapSchools,
   homeAddress,
   homeCoordinates,
@@ -72,9 +81,13 @@ export function SearchResults({
 
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
         <SchoolMap
+          centerCoordinates={centerCoordinates}
+          centerSchoolId={centerSchool?.id}
+          hasSearched={hasSearched}
           homeAddress={homeAddress}
           homeCoordinates={homeCoordinates}
           radiusMinutes={radiusMinutes}
+          searchMode={searchMode}
           filteredSchoolIds={new Set(filteredSchools.map((school) => school.id))}
           schoolNumberMap={schoolNumberMap}
           schools={mapSchools}
@@ -87,8 +100,8 @@ export function SearchResults({
           onSelectSchool={onSelectSchool}
         />
 
-        <aside className="space-y-5 lg:sticky lg:top-4 lg:max-h-[70vh] lg:overflow-y-auto lg:pr-1">
-          {commuteError ? (
+        <aside className="space-y-4 lg:sticky lg:top-4 lg:flex lg:h-[82vh] lg:max-h-[800px] lg:flex-col lg:overflow-hidden lg:pr-1">
+          {commuteError && hasSearched ? (
             <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
               {commuteError}
             </div>
@@ -96,23 +109,32 @@ export function SearchResults({
 
           {activeSchool ? (
             <SchoolProfileCard
+              centerCoordinates={centerCoordinates}
+              centerSchool={centerSchool}
               commuteResult={commuteResults[activeSchool.id]}
-              isLoadingCommute={isLoadingCommute}
+              isSchoolSearchMode={searchMode === "school"}
+              isLoadingCommute={hasSearched ? isLoadingCommute : false}
               school={activeSchool}
               isNearest={activeSchool.id === nearbySchools[0]?.id}
               selectedFilter={selectedFilter}
+              showCommutePrompt={!hasSearched}
             />
           ) : null}
-          <NearbySchoolsList
-            commuteResults={commuteResults}
-            homeCoordinates={homeCoordinates}
-            isLoadingCommute={isLoadingCommute}
-            schoolNumberMap={schoolNumberMap}
-            schoolCoordinatesMap={schoolCoordinatesMap}
-            schools={nearbySchools}
-            selectedSchoolId={activeSchool?.id}
-            onSelectSchool={onSelectSchool}
-          />
+          <div className="min-h-0 flex-1">
+            <NearbySchoolsList
+              centerCoordinates={centerCoordinates}
+              centerSchool={centerSchool}
+              commuteResults={commuteResults}
+              homeCoordinates={homeCoordinates}
+              isLoadingCommute={isLoadingCommute}
+              searchMode={searchMode}
+              schoolNumberMap={schoolNumberMap}
+              schoolCoordinatesMap={schoolCoordinatesMap}
+              schools={nearbySchools}
+              selectedSchoolId={activeSchool?.id}
+              onSelectSchool={onSelectSchool}
+            />
+          </div>
         </aside>
       </div>
     </div>

@@ -4,13 +4,20 @@ type CommuteMetricsProps = {
   commuteResult?: CommuteResult;
   isLoading?: boolean;
   school: School;
+  showPrompt?: boolean;
 };
 
 export function CommuteMetrics({
   commuteResult,
   isLoading = false,
-  school
+  school,
+  showPrompt = false
 }: CommuteMetricsProps) {
+  const fallbackBikeMinutes = Math.max(
+    8,
+    Math.round(school.commute.walkingMinutes * 0.4)
+  );
+
   const metrics = [
     {
       label: "Walk",
@@ -18,7 +25,7 @@ export function CommuteMetrics({
     },
     {
       label: "Bike",
-      value: commuteResult?.bikingMinutes
+      value: commuteResult?.bikingMinutes ?? fallbackBikeMinutes
     },
     {
       label: "Drive",
@@ -31,29 +38,38 @@ export function CommuteMetrics({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-      {metrics.map((metric) => (
-        <div
-          key={metric.label}
-          className="rounded-xl border border-slate-200 bg-slate-50 p-3"
-        >
-          <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            {metric.label}
-          </div>
-          {isLoading && metric.value === undefined ? (
-            <div className="mt-2 h-6 w-14 animate-pulse rounded bg-slate-200" />
-          ) : (
-            <div className="mt-1 text-xl font-semibold text-slate-950">
-              {formatMinutes(metric.value)}
-              {typeof metric.value === "number" ? (
-                <span className="ml-1 text-sm font-medium text-slate-500">
-                  min
-                </span>
-              ) : null}
-            </div>
-          )}
+    <div className="space-y-3">
+      {showPrompt ? (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600">
+          Enter and search a home address to replace these baseline times with
+          address-specific commute results.
         </div>
-      ))}
+      ) : null}
+
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        {metrics.map((metric) => (
+          <div
+            key={metric.label}
+            className="rounded-xl border border-slate-200 bg-slate-50 p-3"
+          >
+            <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              {metric.label}
+            </div>
+            {isLoading && metric.value === undefined ? (
+              <div className="mt-2 h-6 w-14 animate-pulse rounded bg-slate-200" />
+            ) : (
+              <div className="mt-1 text-xl font-semibold text-slate-950">
+                {formatMinutes(metric.value)}
+                {typeof metric.value === "number" ? (
+                  <span className="ml-1 text-sm font-medium text-slate-500">
+                    min
+                  </span>
+                ) : null}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

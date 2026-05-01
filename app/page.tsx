@@ -14,19 +14,26 @@ export default function Home() {
       <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8 lg:py-6">
         <PageHeader
           hasSearched={navigator.hasSearched}
-          address={navigator.address}
+          address={navigator.hasSearched ? navigator.submittedAddress : navigator.address}
         />
 
         <div className="space-y-6">
           <AddressSearch
             address={navigator.address}
+            isSchoolDropdownOpen={navigator.isSearchDropdownOpen}
             onAddressChange={navigator.setAddress}
             onAddressSelect={navigator.selectAddressSuggestion}
-            onSearch={navigator.search}
+            onSearch={navigator.searchAddress}
+            onSchoolDropdownOpenChange={navigator.setIsSearchDropdownOpen}
+            onSchoolQueryChange={navigator.setSchoolQuery}
+            onSchoolSelect={navigator.selectSearchSchool}
             onUseCurrentLocation={navigator.submitCurrentLocation}
+            schoolQuery={navigator.schoolQuery}
+            schoolSuggestions={navigator.schoolSuggestions}
+            centerSchool={navigator.centerSchool}
           />
 
-          {!navigator.hasSearched ? (
+          {!navigator.hasSearched && !navigator.activeSchool ? (
             <EmptyState />
           ) : (
             <SearchResults
@@ -35,7 +42,11 @@ export default function Home() {
               commuteResults={navigator.commuteResults}
               counts={navigator.counts}
               filteredSchools={navigator.filteredSchools}
+              hasSearched={navigator.hasSearched}
+              searchMode={navigator.searchMode}
               mapSchools={navigator.allSchools}
+              centerCoordinates={navigator.centerCoordinates}
+              centerSchool={navigator.centerSchool}
               homeAddress={navigator.submittedAddress}
               homeCoordinates={navigator.homeCoordinates}
               isLoadingCommute={navigator.isLoadingCommute}
