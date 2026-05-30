@@ -92,6 +92,9 @@ footer{text-align:center;padding:20px;font-size:.8rem;color:#666}
 .btn-secondary:hover{background:#f0f6ff}
 #map-canvas{width:100%;height:620px;border-radius:14px;border:1px solid var(--border);background:#f0f6ff}
 .nearby-list{max-height:520px;overflow-y:auto;margin-top:8px}
+.nearby-group{margin-top:14px}
+.nearby-group:first-child{margin-top:4px}
+.nearby-group-title{font-size:10.5px;font-weight:700;color:#005AAA;text-transform:uppercase;letter-spacing:.5px;margin:0 0 6px;padding-bottom:3px;border-bottom:1px solid #eaeef5}
 .nearby-item{padding:10px 12px;border-radius:8px;background:#f8fafd;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all .1s;overflow:hidden}
 .nearby-item:hover{background:#eef4ff;border-color:var(--border)}
 .nearby-name{font-weight:600;color:#1f2a22;font-size:13px;margin-bottom:2px}
@@ -109,9 +112,28 @@ footer{text-align:center;padding:20px;font-size:.8rem;color:#666}
 .iw-meta{font-size:11.5px;color:#6c757d;margin-bottom:8px;line-height:1.45}
 .iw-actions{display:flex;gap:6px;flex-direction:column}
 .iw-btn{padding:6px 10px;font-size:11.5px;font-weight:600;border-radius:6px;border:1px solid #005AAA;background:white;color:#005AAA;cursor:pointer;text-align:left;font-family:inherit}
-.iw-btn:hover:not(:disabled){background:#005AAA;color:white}
+.iw-btn:hover:not(:disabled){background:#f0f6ff}
 .iw-btn:disabled{opacity:.4;cursor:not-allowed;border-color:#aaa;color:#aaa}
+.iw-btn.iw-btn-primary{background:#005AAA;color:white;border-color:#005AAA}
+.iw-btn.iw-btn-primary:hover:not(:disabled){background:#003f7a;border-color:#003f7a;color:white}
+.iw-btn.iw-btn-primary:disabled{background:#ccc;border-color:#ccc;color:#888}
 .iw-nodata{font-size:11px;color:#c0392b;margin-top:6px}
+.iw-commute{margin:8px 0 10px;padding:8px 10px;background:#f8fafd;border:1px solid #eaeef5;border-radius:6px}
+.iw-commute-title{font-size:10.5px;font-weight:700;color:#005AAA;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.iw-commute-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+.iw-commute-row{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:#3a4a5c;gap:6px}
+.iw-commute-label{font-weight:600;white-space:nowrap}
+.iw-commute-val{font-weight:700;color:#005AAA;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.iw-commute-val.iw-pending{color:#9aa5b1;font-weight:500}
+
+/* Compare-header school pills (made obviously clickable) */
+.school-pill{background:white;border:1.5px solid var(--blue);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.school-pill:hover{background:var(--blue);color:white;box-shadow:0 2px 8px rgba(0,90,170,0.22)}
+.school-pill-arrow{font-size:14px;line-height:1;transition:transform .15s}
+.school-pill:hover .school-pill-arrow{transform:translateX(3px)}
+.compare-tip{font-size:12px;color:var(--muted);margin:-2px 0 14px;font-style:italic}
+.profile-map-link{display:inline-block;margin-left:12px;color:var(--blue);text-decoration:none;font-weight:600}
+.profile-map-link:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -158,6 +180,16 @@ footer{text-align:center;padding:20px;font-size:.8rem;color:#666}
     <div class="map-layout">
       <div class="map-sidebar">
         <div class="panel">
+          <h3>Search by School Name</h3>
+          <div class="search-row">
+            <input id="school-search-input" list="school-search-list" placeholder="Type a school name…" onkeydown="if(event.key==='Enter')focusSearchedSchool()" />
+            <button class="btn-primary" onclick="focusSearchedSchool()">Go</button>
+          </div>
+          <datalist id="school-search-list"></datalist>
+          <p class="small-note" style="margin-top:8px">Pick from the dropdown or type any part of a school's name.</p>
+        </div>
+
+        <div class="panel">
           <h3>Find a School Near You</h3>
           <label>Your Address</label>
           <div class="search-row">
@@ -166,14 +198,14 @@ footer{text-align:center;padding:20px;font-size:.8rem;color:#666}
           </div>
           <button class="btn-secondary" onclick="useCurrentLocation()">Use My Current Location</button>
 
-          <label>Search Radius (driving minutes)</label>
+          <label>Search Radius (public transit minutes)</label>
           <div class="map-radius">
-            <input id="radius-slider" type="range" min="5" max="30" step="5" value="15" oninput="updateRadius()" />
-            <span class="map-radius-value" id="radius-label">15 min</span>
+            <input id="radius-slider" type="range" min="10" max="60" step="5" value="30" oninput="updateRadius()" />
+            <span class="map-radius-value" id="radius-label">30 min</span>
           </div>
 
-          <div class="map-status" id="map-status">Showing all 127 SFUSD schools. Enter an address to filter by driving time.</div>
-          <div class="small-note" style="margin-top:6px">Circle shows approximate radius; filter uses real driving time from Google.</div>
+          <div class="map-status" id="map-status">Showing all 127 SFUSD schools. Enter an address to filter by public transit time.</div>
+          <div class="small-note" style="margin-top:6px">Circle shows approximate radius; filter uses real Muni/BART travel time from Google for the current departure time.</div>
         </div>
 
         <div class="panel">
@@ -208,12 +240,11 @@ var TOPICS = [
   { id:'math',     label:'Academic Performance – Math' },
   { id:'science',  label:'Academic Performance – Science' },
   { id:'pft',      label:'Physical Fitness' },
-  { id:'grad',     label:'Graduation Rate by Group' },
+  { id:'grad',     label:'High School Graduation Rate by Group' },
   { id:'absence',  label:'Chronic Absenteeism' },
   { id:'susp',     label:'Suspensions & Expulsions' },
   { id:'class',    label:'Class Size' },
   { id:'staff',    label:'Support Staff' },
-  { id:'exp',      label:'Expenditures & Salaries' },
   { id:'ap',       label:'Advanced Placement Courses' },
 ];
 
@@ -227,11 +258,16 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function fmt(v, pct){
   if(v===null||v===undefined||v===''){ return '—'; }
   if(typeof v==='string' && v.trim()===''){ return '—'; }
-  var n=parseFloat(v);
-  if(!isNaN(n)){
-    if(pct) return n.toFixed(1)+'%';
-    if(Number.isInteger(n)||n===Math.round(n)) return n.toLocaleString();
-    return n.toFixed(1);
+  // Only treat as numeric if the WHOLE value is a number (optionally trailing %).
+  // Prevents addresses like "0250 23RD AV..." from being parsed as 250.
+  var s = (typeof v==='number') ? String(v) : String(v).trim();
+  if(/^-?\d+(?:\.\d+)?\s*%?$/.test(s)){
+    var n=parseFloat(s);
+    if(!isNaN(n)){
+      if(pct) return n.toFixed(1)+'%';
+      if(Number.isInteger(n)||n===Math.round(n)) return n.toLocaleString();
+      return n.toFixed(1);
+    }
   }
   return esc(v);
 }
@@ -278,10 +314,18 @@ function kv(label, va, vb, pct, distVal){
 function tableWrap(rows, a, b, distHeader){
   if(!rows) return '';
   var dh = distHeader||'District Avg';
-  if(profileMode){
-    return '<div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>'+esc(a)+'</th><th class="col-dist">'+esc(dh||'District Avg')+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  // Hide the District Avg column entirely if every row's dist cell is just the
+  // em-dash placeholder. kv() always emits <td class="col-dist">VALUE</td>,
+  // so a real value means a non-"—" content character.
+  var hasDistData = /<td class="col-dist">(?!—<\/td>)[^<]/.test(rows);
+  if(!hasDistData){
+    rows = rows.replace(/<td class="col-dist">[^<]*<\/td>/g, '');
   }
-  return '<div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>'+esc(a)+'</th><th>'+esc(b)+'</th><th class="col-dist">'+esc(dh)+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  var distHeaderCell = hasDistData ? '<th class="col-dist">'+esc(dh)+'</th>' : '';
+  if(profileMode){
+    return '<div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>'+esc(a)+'</th>'+distHeaderCell+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }
+  return '<div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>'+esc(a)+'</th><th>'+esc(b)+'</th>'+distHeaderCell+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
 function section(title, content){
@@ -554,10 +598,15 @@ function showProfile(name){
   if(!name) return;
   var r=getRow(name);
   profileMode=true;
+  var mapLink = '';
+  if(typeof sarcToSfusdId !== 'undefined' && sarcToSfusdId[name]){
+    mapLink = ' <a href="#" onclick="viewSchoolOnMap(this.getAttribute(\'data-school\'));return false;" data-school="'+esc(name)+'" class="profile-map-link">View on map →</a>';
+  }
   var html='<div style="margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue)">';
   html+='<h3 style="font-size:1.15rem;color:var(--blue);margin-bottom:4px">'+esc(name)+' — Full School Profile</h3>';
-  html+='<span style="font-size:12px;color:var(--muted)">2023–24 SARC Data &nbsp;|  <a href="#" onclick="backToCompare();return false;" style="color:var(--blue)">← Back to Comparison</a></span></div>';
-  TOPICS.forEach(function(t){
+  html+='<span style="font-size:12px;color:var(--muted)">2023–24 SARC Data &nbsp;|  <a href="#" onclick="backToCompare();return false;" style="color:var(--blue)">← Back to Comparison</a></span>'+mapLink+'</div>';
+  var profileTopics = (typeof getVisibleTopics === 'function') ? getVisibleTopics(name, name) : TOPICS;
+  profileTopics.forEach(function(t){
     if(renderers[t.id]){ var c=renderers[t.id](r,r,name,name); if(c) html+=c; }
   });
   profileMode=false;
@@ -587,12 +636,14 @@ var renderers = {
   susp:    renderSusp,
   class:   renderClass,
   staff:   renderStaff,
-  exp:     renderExp,
   ap:      renderAP,
 };
 
 function buildNav(){
-  return TOPICS.map(function(t){
+  var n1 = document.getElementById('school-a').value;
+  var n2 = document.getElementById('school-b').value;
+  var visible = (typeof getVisibleTopics === 'function') ? getVisibleTopics(n1, n2) : TOPICS;
+  return visible.map(function(t){
     return '<button onclick="switchTopic(\''+t.id+'\')" id="btn-'+t.id+'" class="'+(t.id===activeTopic?'active':'')+'">'+esc(t.label)+'</button>';
   }).join('');
 }
@@ -619,15 +670,22 @@ function runCompare(){
   if(!n1||!n2) return;
   var r1=getRow(n1), r2=getRow(n2);
 
+  // If the previously-active topic no longer applies (e.g. grad pill hidden
+  // for two elementaries), drop back to the default.
+  if(typeof getVisibleTopics === 'function'){
+    var stillVisible = getVisibleTopics(n1, n2).some(function(t){return t.id===activeTopic;});
+    if(!stillVisible) activeTopic = 'mission';
+  }
+
   var content=renderers[activeTopic]?renderers[activeTopic](r1,r2,n1,n2):'';
   if(!content) content='<div class="empty">No data available for this section.</div>';
 
-  var pillStyle='background:white;border:1.5px solid var(--blue);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;transition:all .15s';
-  var schoolHeader='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'
-    +'<button data-school="'+esc(n1)+'" onclick="profileForSchool(this)" style="'+pillStyle+'">'+esc(n1)+'</button>'
-    +'<span style="color:var(--muted);font-weight:500;font-size:13px">vs</span>'
-    +'<button data-school="'+esc(n2)+'" onclick="profileForSchool(this)" style="'+pillStyle+'">'+esc(n2)+'</button>'
-    +'</div>';
+  var schoolHeader='<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">'
+    +'<button data-school="'+esc(n1)+'" onclick="profileForSchool(this)" class="school-pill" title="Click to view full profile">'+esc(n1)+'<span class="school-pill-arrow">→</span></button>'
+    +'<span style="color:var(--muted);font-weight:500;font-size:13px">compared to</span>'
+    +'<button data-school="'+esc(n2)+'" onclick="profileForSchool(this)" class="school-pill" title="Click to view full profile">'+esc(n2)+'<span class="school-pill-arrow">→</span></button>'
+    +'</div>'
+    +'<div class="compare-tip">Tip: click a school name above to view its full profile.</div>';
   document.getElementById('results').innerHTML=
     schoolHeader+
     '<div class="section-nav">'+buildNav()+'</div>'+
@@ -779,10 +837,11 @@ var SFUSD_SCHOOLS = [
 {"id":127,"name":"Zaida T. Rodriguez Early Education School","gradeLevels":"Early Education (PreK, TK)","address":"2950 Mission St (main); 421 Bartlett Ave (TK Campus), San Francisco, CA 94110","lat":37.7497941,"lng":-122.4185197}
 ];
 
-var RADIUS_METERS_BY_MINUTES = {5:2400, 10:4800, 15:7200, 20:9600, 25:12000, 30:14400};
+// Transit averages about 250 m/min in SF (walking legs + waits + in-vehicle time).
+var RADIUS_METERS_BY_MINUTES = {10:2500, 15:3750, 20:5000, 25:6250, 30:7500, 35:8750, 40:10000, 45:11250, 50:12500, 55:13750, 60:15000};
 var map, homeMarker, radiusCircle, schoolEntries = [], infoWindow;
 var homeCoords = null;
-var radiusMinutes = 15;
+var radiusMinutes = 30;
 var commuteMinutes = null;     // {schoolId: minutes from Distance Matrix}, null until first home set
 var commuteSequence = 0;        // bumps each new home, lets stale callbacks drop themselves
 var isLoadingCommute = false;
@@ -905,14 +964,33 @@ window.initMap = function(){
   });
 };
 
+var infoWindowSeq = 0; // increments per click; lets stale per-mode callbacks drop themselves
+
 function openInfoWindow(s,marker){
   var canonical = findSarcMatch(s.name);
   var disabled = canonical ? '' : 'disabled';
   var safeCanonical = canonical ? jsEsc(canonical) : '';
+
+  var commuteSection = '';
+  if(homeCoords){
+    commuteSection =
+      '<div class="iw-commute">'+
+        '<div class="iw-commute-title">Commute from your home</div>'+
+        '<div class="iw-commute-grid">'+
+          '<div class="iw-commute-row"><span class="iw-commute-label">Walk</span><span class="iw-commute-val iw-pending" id="iw-mode-walking">…</span></div>'+
+          '<div class="iw-commute-row"><span class="iw-commute-label">Drive</span><span class="iw-commute-val iw-pending" id="iw-mode-driving">…</span></div>'+
+          '<div class="iw-commute-row"><span class="iw-commute-label">Bus</span><span class="iw-commute-val iw-pending" id="iw-mode-bus">…</span></div>'+
+          '<div class="iw-commute-row"><span class="iw-commute-label">Muni Rail</span><span class="iw-commute-val iw-pending" id="iw-mode-muni">…</span></div>'+
+        '</div>'+
+      '</div>';
+  }
+
   var html = '<div class="iw">'+
     '<div class="iw-name">'+esc(s.name)+'</div>'+
     '<div class="iw-meta">'+esc(s.gradeLevels)+'<br>'+esc(s.address)+'</div>'+
+    commuteSection +
     '<div class="iw-actions">'+
+      '<button class="iw-btn iw-btn-primary" '+disabled+' onclick="viewSchoolProfile(\''+safeCanonical+'\')">View Full Profile →</button>'+
       '<button class="iw-btn" '+disabled+' onclick="setCompareSchool(\'a\',\''+safeCanonical+'\')">Set as School A</button>'+
       '<button class="iw-btn" '+disabled+' onclick="setCompareSchool(\'b\',\''+safeCanonical+'\')">Set as School B</button>'+
     '</div>'+
@@ -920,7 +998,82 @@ function openInfoWindow(s,marker){
   '</div>';
   infoWindow.setContent(html);
   infoWindow.open(map,marker);
+
+  if(homeCoords){
+    fetchCommuteDetails(s, ++infoWindowSeq);
+  }
 }
+
+// Dispatches 4 Distance Matrix calls (walk / drive / bus / Muni rail) for one
+// school and writes results into the open info window as each returns.
+function fetchCommuteDetails(school, mySeq){
+  if(!window.google || !google.maps) return;
+  var service = new google.maps.DistanceMatrixService();
+  var dest = {lat: school.lat, lng: school.lng};
+
+  function writeCell(modeKey, text, pending){
+    if(mySeq !== infoWindowSeq) return; // user clicked something else
+    var el = document.getElementById('iw-mode-' + modeKey);
+    if(!el) return;
+    el.textContent = text;
+    el.classList.toggle('iw-pending', !!pending);
+  }
+
+  function callMode(modeKey, req){
+    var fullReq = {
+      origins: [homeCoords],
+      destinations: [dest],
+      travelMode: req.travelMode
+    };
+    if(req.transitOptions) fullReq.transitOptions = req.transitOptions;
+    service.getDistanceMatrix(fullReq, function(response, status){
+      if(mySeq !== infoWindowSeq) return;
+      if(status === 'OK' && response.rows[0] && response.rows[0].elements[0] &&
+         response.rows[0].elements[0].status === 'OK'){
+        var min = Math.round(response.rows[0].elements[0].duration.value / 60);
+        writeCell(modeKey, min + ' min', false);
+      } else {
+        // ZERO_RESULTS (e.g. no Muni Rail route) → show em dash.
+        writeCell(modeKey, '—', false);
+      }
+    });
+  }
+
+  callMode('walking', { travelMode: google.maps.TravelMode.WALKING });
+  callMode('driving', { travelMode: google.maps.TravelMode.DRIVING });
+  callMode('bus', {
+    travelMode: google.maps.TravelMode.TRANSIT,
+    transitOptions: { departureTime: new Date(), modes: [google.maps.TransitMode.BUS] }
+  });
+  callMode('muni', {
+    travelMode: google.maps.TravelMode.TRANSIT,
+    transitOptions: { departureTime: new Date(), modes: [google.maps.TransitMode.TRAM, google.maps.TransitMode.SUBWAY] }
+  });
+}
+
+window.viewSchoolProfile = function(name){
+  if(!name) return;
+  switchTab('compare');
+  if(infoWindow) infoWindow.close();
+  if(typeof showProfile === 'function') showProfile(name);
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// Called from the "View on map →" link in the profile header.
+window.viewSchoolOnMap = function(sarcName){
+  if(!sarcName) return;
+  var id = sarcToSfusdId[sarcName];
+  if(!id){
+    alert('No map location is available for this school.');
+    return;
+  }
+  switchTab('map');
+  // Give the tab swap one tick so the map can resize before we pan.
+  setTimeout(function(){
+    if(typeof focusSchool === 'function') focusSchool(id);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 60);
+};
 
 window.setCompareSchool = function(slot, name){
   if(!name) return;
@@ -982,7 +1135,7 @@ function setHomeLocation(lat,lng){
 function drawRadiusCircle(){
   if(radiusCircle) radiusCircle.setMap(null);
   if(!homeCoords) return;
-  var meters = RADIUS_METERS_BY_MINUTES[radiusMinutes] || (radiusMinutes * 480);
+  var meters = RADIUS_METERS_BY_MINUTES[radiusMinutes] || (radiusMinutes * 250);
   radiusCircle = new google.maps.Circle({
     center:homeCoords,
     radius:meters,
@@ -1004,7 +1157,7 @@ window.updateRadius = function(){
   if(homeCoords){ drawRadiusCircle(); updateNearbyList(); fitMapToRadius(); }
 };
 
-// ─── Distance Matrix: real driving minutes ────────────────────────────────
+// ─── Distance Matrix: real public-transit minutes ─────────────────────────
 function computeCommuteTimes(home){
   if(!home || !window.google || !google.maps) return;
   var mySeq = ++commuteSequence;
@@ -1020,8 +1173,8 @@ function computeCommuteTimes(home){
     service.getDistanceMatrix({
       origins: [home],
       destinations: dests,
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.IMPERIAL
+      travelMode: google.maps.TravelMode.TRANSIT,
+      transitOptions: { departureTime: new Date() }
     }, function(response, status){
       if(mySeq !== commuteSequence) return; // a newer search has started; drop
       if(status === 'OK' && response && response.rows[0]){
@@ -1037,7 +1190,7 @@ function computeCommuteTimes(home){
       }
       done += chunk.length;
       if(done < total){
-        document.getElementById('map-status').textContent = 'Computing driving times: ' + done + ' / ' + total + '…';
+        document.getElementById('map-status').textContent = 'Computing transit times: ' + done + ' / ' + total + '…';
       } else {
         isLoadingCommute = false;
         if(errored && Object.keys(commuteMinutes).length === 0){
@@ -1054,15 +1207,15 @@ function updateNearbyList(){
   var listEl = document.getElementById('nearby-list');
   var statusEl = document.getElementById('map-status');
   if(!homeCoords){
-    listEl.innerHTML = '<div class="small-note">Enter an address or share your location to see schools sorted by driving time.</div>';
+    listEl.innerHTML = '<div class="small-note">Enter an address or share your location to see schools sorted by transit time.</div>';
     schoolEntries.forEach(function(e){e.marker.setMap(map);});
     statusEl.textContent = 'Showing all 127 SFUSD schools.';
     return;
   }
   if(isLoadingCommute || !commuteMinutes){
-    listEl.innerHTML = '<div class="small-note">Computing driving times…</div>';
+    listEl.innerHTML = '<div class="small-note">Computing transit times…</div>';
     schoolEntries.forEach(function(e){e.marker.setMap(map);});
-    statusEl.textContent = 'Computing driving times…';
+    statusEl.textContent = 'Computing transit times…';
     return;
   }
   var withTime = [];
@@ -1082,31 +1235,183 @@ function updateNearbyList(){
   });
 
   if(withTime.length===0){
-    listEl.innerHTML = '<div class="small-note">No SFUSD schools within '+radiusMinutes+' min driving. Try expanding the radius.</div>';
-    statusEl.textContent = '0 schools within '+radiusMinutes+' min driving.';
+    listEl.innerHTML = '<div class="small-note">No SFUSD schools within '+radiusMinutes+' min by public transit. Try expanding the radius.</div>';
+    statusEl.textContent = '0 schools within '+radiusMinutes+' min transit.';
     return;
   }
-  listEl.innerHTML = withTime.map(function(x){
-    var lbl = Math.round(x.minutes) + ' min';
-    return '<div class="nearby-item" onclick="focusSchool('+x.school.id+')">'
-      +'<span class="nearby-dist">'+lbl+'</span>'
-      +'<div class="nearby-name">'+esc(x.school.name)+'</div>'
-      +'<div class="nearby-meta">'+esc(x.school.gradeLevels)+'</div>'
-      +'</div>';
-  }).join('');
-  statusEl.textContent = withTime.length+' school'+(withTime.length===1?'':'s')+' within '+radiusMinutes+' min driving.';
+
+  // Bucket results by category. K-8 schools appear under both Elementary and
+  // Middle. Within each bucket, sort by commute minutes ascending.
+  var buckets = {};
+  SCHOOL_CATEGORY_ORDER.forEach(function(k){ buckets[k] = []; });
+  withTime.forEach(function(x){
+    var cats = categoriesForSchool(x.school.gradeLevels, x.school.name);
+    cats.forEach(function(c){ if(buckets[c]) buckets[c].push(x); });
+  });
+
+  var html = '';
+  SCHOOL_CATEGORY_ORDER.forEach(function(label){
+    var items = buckets[label];
+    if(!items.length) return;
+    items.sort(function(a,b){return a.minutes-b.minutes;});
+    html += '<div class="nearby-group">';
+    html += '<div class="nearby-group-title">'+esc(label)+'</div>';
+    html += items.map(function(x){
+      var lbl = Math.round(x.minutes) + ' min';
+      return '<div class="nearby-item" onclick="focusSchool('+x.school.id+')">'
+        +'<span class="nearby-dist">'+lbl+'</span>'
+        +'<div class="nearby-name">'+esc(x.school.name)+'</div>'
+        +'<div class="nearby-meta">'+esc(x.school.gradeLevels)+'</div>'
+        +'</div>';
+    }).join('');
+    html += '</div>';
+  });
+  listEl.innerHTML = html;
+  statusEl.textContent = withTime.length+' school'+(withTime.length===1?'':'s')+' within '+radiusMinutes+' min by public transit.';
 }
 
 window.focusSchool = function(id){
   var entry;
   for(var i=0;i<schoolEntries.length;i++){ if(schoolEntries[i].school.id===id){entry=schoolEntries[i];break;} }
   if(!entry) return;
+  entry.marker.setMap(map); // un-hide if filtered out
   map.panTo(entry.marker.getPosition());
+  if(map.getZoom() < 14) map.setZoom(15);
   openInfoWindow(entry.school, entry.marker);
 };
 
+// ─── Search by school name (datalist typeahead) ───────────────────────────
+function populateSchoolSearchList(){
+  var dl = document.getElementById('school-search-list');
+  if(!dl) return;
+  // Sort alphabetically for the dropdown.
+  var sorted = SFUSD_SCHOOLS.slice().sort(function(a,b){return a.name.localeCompare(b.name);});
+  dl.innerHTML = sorted.map(function(s){
+    return '<option value="'+esc(s.name)+'"></option>';
+  }).join('');
+}
+
+window.focusSearchedSchool = function(){
+  var input = document.getElementById('school-search-input');
+  var val = (input.value || '').trim();
+  if(!val) return;
+  var statusEl = document.getElementById('map-status');
+  // Exact match first.
+  var found = null;
+  for(var i=0;i<SFUSD_SCHOOLS.length;i++){
+    if(SFUSD_SCHOOLS[i].name === val){ found = SFUSD_SCHOOLS[i]; break; }
+  }
+  // Then case-insensitive substring.
+  if(!found){
+    var lower = val.toLowerCase();
+    for(var j=0;j<SFUSD_SCHOOLS.length;j++){
+      if(SFUSD_SCHOOLS[j].name.toLowerCase().indexOf(lower) >= 0){ found = SFUSD_SCHOOLS[j]; break; }
+    }
+  }
+  if(!found){
+    statusEl.innerHTML = '<span class="map-error">No SFUSD school matches "'+esc(val)+'".</span>';
+    return;
+  }
+  input.value = found.name;
+  focusSchool(found.id);
+};
+
+// Returns 1+ category labels for a school, based on its SFUSD gradeLevels
+// string (preferred) or, as a fallback, its name. K-8 schools land in both
+// Elementary and Middle so they show up under either lens.
+var SCHOOL_CATEGORY_ORDER = ['Elementary Schools', 'Middle Schools', 'High Schools', 'Other Schools'];
+
+function categoriesForSchool(gradeLevels, name){
+  var cats = [];
+  if(gradeLevels){
+    if(/Elementary School/.test(gradeLevels)) cats.push('Elementary Schools');
+    if(/Middle School/.test(gradeLevels))     cats.push('Middle Schools');
+    if(/High School/.test(gradeLevels))       cats.push('High Schools');
+  }
+  if(cats.length === 0 && name){
+    if(/\bElementary\b/i.test(name)) cats.push('Elementary Schools');
+    if(/\bMiddle\b/i.test(name))     cats.push('Middle Schools');
+    if(/\bHigh\b/i.test(name) || /\bSecondary\b/i.test(name)) cats.push('High Schools');
+    if(/K-?8/i.test(name)){
+      if(cats.indexOf('Elementary Schools') < 0) cats.push('Elementary Schools');
+      if(cats.indexOf('Middle Schools') < 0)     cats.push('Middle Schools');
+    }
+  }
+  if(cats.length === 0) cats.push('Other Schools');
+  return cats;
+}
+
+// Module-level SARC name → SFUSD gradeLevels string, built once during
+// categorizeSarcSchools(). Consumed by isHighSchoolName() for topic visibility.
+var sarcGradeLevelsByName = {};
+// Module-level SARC name → SFUSD school id, lets the profile view jump to the map.
+var sarcToSfusdId = {};
+
+// ─── Group "Select Schools" dropdowns by Elementary / Middle / High ───────
+function categorizeSarcSchools(){
+  // Forward index: SARC canonical name → gradeLevels string + map school id.
+  for(var i=0;i<SFUSD_SCHOOLS.length;i++){
+    var s = SFUSD_SCHOOLS[i];
+    var canon = findSarcMatch(s.name);
+    if(canon){
+      if(!sarcGradeLevelsByName[canon]) sarcGradeLevelsByName[canon] = s.gradeLevels;
+      if(!sarcToSfusdId[canon])         sarcToSfusdId[canon] = s.id;
+    }
+  }
+  var groups = {};
+  SCHOOL_CATEGORY_ORDER.forEach(function(k){ groups[k] = []; });
+  var allSarcNames = sarcTokenIndex.map(function(x){return x.canonical;}).slice().sort();
+  allSarcNames.forEach(function(name){
+    var cats = categoriesForSchool(sarcGradeLevelsByName[name], name);
+    cats.forEach(function(c){ if(groups[c]) groups[c].push(name); });
+  });
+  return groups;
+}
+
+// True if the SARC school is (or includes) a high school based on its
+// SFUSD gradeLevels string (preferred) or its name as fallback.
+function isHighSchoolName(name){
+  if(!name) return false;
+  return categoriesForSchool(sarcGradeLevelsByName[name], name).indexOf('High Schools') >= 0;
+}
+
+// Returns the subset of TOPICS that should be shown for this pair of schools.
+// 'grad' and 'ap' are HS-only — hidden unless at least one school is a high school.
+function getVisibleTopics(n1, n2){
+  var hsOnly = {grad:1, ap:1};
+  var anyHS = isHighSchoolName(n1) || isHighSchoolName(n2);
+  return TOPICS.filter(function(t){
+    if(hsOnly[t.id]) return anyHS;
+    return true;
+  });
+}
+
+function repopulateSchoolDropdowns(){
+  var groups = categorizeSarcSchools();
+  var order = ['Elementary Schools', 'Middle Schools', 'High Schools', 'Other Schools'];
+  var html = order.map(function(label){
+    var items = groups[label];
+    if(!items.length) return '';
+    return '<optgroup label="'+esc(label)+'">' + items.map(function(n){
+      return '<option value="'+esc(n)+'">'+esc(n)+'</option>';
+    }).join('') + '</optgroup>';
+  }).join('');
+
+  var sa = document.getElementById('school-a');
+  var sb = document.getElementById('school-b');
+  if(sa) sa.innerHTML = html;
+  if(sb){
+    sb.innerHTML = html;
+    // Match the original init: default School B to the second available option.
+    var opts = sb.querySelectorAll('option');
+    if(opts.length > 1) sb.value = opts[1].value;
+  }
+}
+
 (function loadGoogleMaps(){
   buildSarcLookup();
+  repopulateSchoolDropdowns();
+  populateSchoolSearchList();
   if(GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY'){
     document.getElementById('map-key-warning').style.display='block';
     return;
