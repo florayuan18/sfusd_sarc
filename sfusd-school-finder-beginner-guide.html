@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFUSD School Finder — Getting Started Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-mid: #4a4a46;
+    --ink-light: #7a7a74;
+    --paper: #faf9f5;
+    --paper-warm: #f3f0e8;
+    --paper-card: #ffffff;
+    --accent: #2b5f8a;
+    --accent-light: #e4eef6;
+    --accent-mid: #5b8fb9;
+    --green: #2e6e4f;
+    --green-light: #e6f3ec;
+    --amber: #8a5c1e;
+    --amber-light: #f5edd8;
+    --border: #dbd8ce;
+    --rule: #e8e5de;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3.5rem;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1.5px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    max-width: 580px;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-mid);
+    max-width: 520px;
+    line-height: 1.65;
+  }
+
+  .audience-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+    background: var(--green-light);
+    color: var(--green);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+  /* ── Overview strip ── */
+  .overview-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+  .overview-cell {
+    background: var(--paper-card);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .overview-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 500;
+  }
+  .overview-val {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── Section heading ── */
+  h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  p { color: var(--ink-mid); margin-bottom: 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  section { margin-bottom: 4rem; }
+
+  .section-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .section-number {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    white-space: nowrap;
+  }
+  .section-rule hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ── Feature cards ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+
+  .feature-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    font-size: 18px;
+  }
+  .icon-blue { background: var(--accent-light); color: var(--accent); }
+  .icon-green { background: var(--green-light); color: var(--green); }
+  .icon-amber { background: var(--amber-light); color: var(--amber); }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 0; margin-top: 1.5rem; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0 1.25rem;
+    position: relative;
+  }
+
+  .step:not(:last-child) .step-line {
+    position: absolute;
+    left: 23px;
+    top: 40px;
+    bottom: -12px;
+    width: 1px;
+    background: var(--rule);
+    z-index: 0;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--paper-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-body { padding-bottom: 2rem; }
+  .step-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); }
+  .step-body p { font-size: 14px; color: var(--ink-mid); margin: 0; }
+
+  /* ── Callout ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+  .callout p { color: var(--accent); font-size: 14px; margin: 0; }
+  .callout-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .callout-tip {
+    border-left-color: var(--green);
+    background: var(--green-light);
+  }
+  .callout-tip .callout-label, .callout-tip p { color: var(--green); }
+
+  /* ── Glossary table ── */
+  .gloss-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    font-size: 14px;
+  }
+  .gloss-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 500;
+    padding: 0 12px 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .gloss-table td {
+    padding: 12px 12px 12px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .gloss-table td:first-child {
+    color: var(--ink);
+    font-weight: 500;
+    width: 38%;
+    padding-right: 1.5rem;
+  }
+
+  /* ── FAQ ── */
+  .faq-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .faq-item {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+  }
+  .faq-q {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .faq-a { font-size: 14px; color: var(--ink-mid); }
+
+  /* ── Next steps banner ── */
+  .next-banner {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .next-banner-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .next-banner h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); }
+  .next-banner p { font-size: 14px; color: var(--ink-mid); }
+
+  /* footer */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+    font-size: 12px;
+    color: var(--ink-light);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 540px) {
+    .overview-strip { grid-template-columns: 1fr; }
+    .next-banner { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <header class="hero">
+    <p class="eyebrow">User documentation</p>
+    <h1>Getting Started with the SFUSD School Finder</h1>
+    <p class="hero-sub">A plain-language guide to exploring, comparing, and understanding your public school options in San Francisco.</p>
+    <div class="audience-tag"><span class="dot"></span> For curious beginners — new to the tool or to SFUSD enrollment</div>
+  </header>
+
+  <!-- Overview strip -->
+  <div class="overview-strip">
+    <div class="overview-cell">
+      <span class="overview-label">Tool type</span>
+      <span class="overview-val">Interactive map</span>
+    </div>
+    <div class="overview-cell">
+      <span class="overview-label">Schools shown</span>
+      <span class="overview-val">127 SFUSD schools</span>
+    </div>
+    <div class="overview-cell">
+      <span class="overview-label">Levels covered</span>
+      <span class="overview-val">Elementary · Middle · High</span>
+    </div>
+  </div>
+
+  <!-- What this tool is -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">Overview</span>
+      <hr>
+    </div>
+    <h2>What is this tool?</h2>
+    <p>The SFUSD School Finder is a map-based tool designed to help families in San Francisco explore public schools near them. Instead of browsing a long list, you can see all 127 district schools plotted on an interactive map, filter by school level, and instantly get commute times from any home address.</p>
+    <p>Whether you are new to SFUSD, trying to understand how school assignments work, or simply curious about what options exist nearby, this guide walks you through the core features step by step.</p>
+
+    <div class="callout">
+      <p class="callout-label">Who this guide is for</p>
+      <p>This guide is written for parents and caregivers who are new to the SFUSD School Finder — you may be exploring for the first time, comparing options before an enrollment deadline, or helping someone else navigate the tool.</p>
+    </div>
+  </section>
+
+  <!-- Key features -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">Features</span>
+      <hr>
+    </div>
+    <h2>What you can do</h2>
+    <p>Here is a quick overview of the features available in the tool.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon icon-blue">📍</div>
+        <h3>Search from your address</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Enter your home address to personalize commute estimates for every school on the map.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-blue">🗺️</div>
+        <h3>Interactive map view</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">All 127 schools appear as numbered pins. Click any pin to see the school's name and quick details.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-green">🔍</div>
+        <h3>Search by school name</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Already have a school in mind? Type its name to center the map on it and see nearby alternatives.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-green">🏫</div>
+        <h3>Filter by school level</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Use the tabs to show only Elementary (65), Middle (24), or High (17) schools, or view all at once.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-amber">⏱️</div>
+        <h3>Commute time radius</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Toggle between 10, 20, and 30-minute radius views to narrow your map to schools within reach.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-amber">🚶</div>
+        <h3>Multi-mode commute details</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Each school shows walk, bike, drive, and Muni times so you can plan realistically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-blue">📊</div>
+        <h3>Full school profile</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Tap "View full school profile" to access grades served, programs, and additional details.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-green">⚖️</div>
+        <h3>Side-by-side compare</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">Use the "Compare" button to evaluate two or more schools against each other.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon icon-amber">📋</div>
+        <h3>Nearby schools list</h3>
+        <p style="font-size:14px; color:var(--ink-mid);">A ranked list of schools within your chosen radius appears beside the map, sorted by distance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to get started -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">Getting started</span>
+      <hr>
+    </div>
+    <h2>Using the tool for the first time</h2>
+    <p>Follow these steps to go from a blank map to a shortlist of schools in under five minutes.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Enter your home address</h3>
+          <p>Type your street address in the "Home address in San Francisco" field and click Search. This personalizes all commute estimates to your actual location. You can also tap "Use current location" if browsing on a mobile device.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Choose a school level</h3>
+          <p>Click Elementary, Middle, or High in the filter tabs at the top of the map. This reduces visual clutter and focuses the map on schools relevant to your child's grade. The number beside each label shows how many schools exist at that level.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Set a commute radius</h3>
+          <p>Use the 10 / 20 / 30 min buttons above the map to draw a travel-time circle around your home. Schools within the circle are your most practical options. Start with 20 minutes — a common benchmark for many families.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Browse the map and the nearby list</h3>
+          <p>Numbered pins appear on the map; a ranked list appears to the right, starting with the nearest school. The star icon marks your home; the red "H" marks a highlighted school. Click any pin or list item to open that school's commute panel.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3>Check commute details</h3>
+          <p>The school panel on the right shows walk, bike, drive, and Muni times. These update to reflect your actual address once you have entered it. Use these numbers to think through your daily schedule.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h3>Explore a school's full profile or compare options</h3>
+          <p>Click "View full school profile" to see program details, grades served, and more. Or click "Compare" to put two schools side by side and evaluate them together.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <h3>Search for a specific school</h3>
+          <p>If someone recommended a school, use the "Search by school name" field near the top. The map will center on that school and show nearby alternatives — useful for understanding whether a specific school fits into your commute.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout callout-tip">
+      <p class="callout-label">Tip</p>
+      <p>Try searching with two different home addresses — your current home and a workplace or common drop-off point — to get a fuller picture of practical options.</p>
+    </div>
+  </section>
+
+  <!-- Understanding what you see -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">Reference</span>
+      <hr>
+    </div>
+    <h2>Understanding what you see</h2>
+    <p>A quick glossary of the terms and labels that appear in the tool.</p>
+
+    <table class="gloss-table">
+      <thead>
+        <tr>
+          <th>Term or label</th>
+          <th>What it means</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Nearest school / Nearest Elementary</td>
+          <td>The school closest to your entered address (or to the map center if no address is set). This updates when you change the level filter.</td>
+        </tr>
+        <tr>
+          <td>Numbered pins (1, 2, 3…)</td>
+          <td>Each pin is one school, ranked by distance from your home. Clicking a pin opens its detail panel on the right side.</td>
+        </tr>
+        <tr>
+          <td>Star icon on the map</td>
+          <td>Your home address, or the school you searched for by name.</td>
+        </tr>
+        <tr>
+          <td>Red "H" icon</td>
+          <td>The currently highlighted school — the one whose details are shown in the panel on the right.</td>
+        </tr>
+        <tr>
+          <td>Walk / Bike / Drive / Muni times</td>
+          <td>Estimated travel times from your entered address to the school by each mode. Without an address, baseline estimates are shown.</td>
+        </tr>
+        <tr>
+          <td>TK, K, 1–5 (grade notation)</td>
+          <td>The grades this school serves. TK = Transitional Kindergarten (pre-K). K = Kindergarten.</td>
+        </tr>
+        <tr>
+          <td>21 in radius / 13 in radius</td>
+          <td>The number of schools of the selected type that fall within your chosen commute radius (10, 20, or 30 minutes).</td>
+        </tr>
+        <tr>
+          <td>127 school markers</td>
+          <td>Total SFUSD public schools shown when no filter is active. Filtering by level reduces this count.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Common questions -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">FAQ</span>
+      <hr>
+    </div>
+    <h2>Common questions</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <p class="faq-q">Do I have to enter my address to use the tool?</p>
+        <p class="faq-a">No. The map loads with all schools visible and baseline commute times by default. Entering your address simply makes the commute estimates more accurate and personalizes the "nearest school" result.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What does "nearest school" mean — is that the school my child is assigned to?</p>
+        <p class="faq-a">No. "Nearest school" shows the SFUSD school geographically closest to your address. SFUSD uses a choice-based enrollment system, so proximity does not automatically mean assignment. This tool helps you explore options, not confirm placement.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Can I look at schools for different grade levels at the same time?</p>
+        <p class="faq-a">The filter tabs show one level at a time (Elementary, Middle, or High), or all schools together. If you need to compare across levels — for example, because you have children of different ages — switch between tabs and note the schools that interest you, then use the compare feature.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What does "Other" mean in the school level count?</p>
+        <p class="faq-a">"Other" covers SFUSD schools that do not fit neatly into the three main levels, such as early education centers (like Commodore Stockton Early Education School) that serve children younger than Kindergarten.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Are commute times real-time or estimates?</p>
+        <p class="faq-a">They are estimates based on typical conditions and are not real-time traffic data. Use them as a planning guide rather than precise measurements, especially for Muni and drive times that can vary with traffic.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What is the "Compare" button for?</p>
+        <p class="faq-a">Compare lets you place two schools side by side to evaluate them together — useful once you have narrowed your list to a few candidates and want to weigh commute, grades served, and other profile details against each other.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next steps -->
+  <section>
+    <div class="section-rule">
+      <span class="section-number">What's next</span>
+      <hr>
+    </div>
+    <h2>Where to go from here</h2>
+    <p>Once you feel comfortable exploring the map, here are natural next steps to deepen your research.</p>
+
+    <div class="next-banner">
+      <div class="next-banner-icon">📂</div>
+      <div>
+        <h3>Read individual school profiles</h3>
+        <p>Tap "View full school profile" on any school you like. Profiles include program specializations, language pathways, and other details that go beyond commute and location.</p>
+      </div>
+    </div>
+
+    <div class="next-banner">
+      <div class="next-banner-icon">⚖️</div>
+      <div>
+        <h3>Use the Compare feature</h3>
+        <p>After building a shortlist of 2–4 schools, use Compare to see them side by side. This is especially useful before attending school tours or open houses.</p>
+      </div>
+    </div>
+
+    <div class="next-banner">
+      <div class="next-banner-icon">📅</div>
+      <div>
+        <h3>Check enrollment deadlines</h3>
+        <p>The School Finder helps you understand your options, but enrollment itself happens through SFUSD's enrollment portal. Check the district website for current application windows and deadlines.</p>
+      </div>
+    </div>
+
+    <div class="next-banner">
+      <div class="next-banner-icon">🏫</div>
+      <div>
+        <h3>Attend school tours or information nights</h3>
+        <p>Many SFUSD schools host open houses in fall and winter. Once you have a shortlist from the map, visiting in person gives you a feel for community and culture that no tool can replicate.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>SFUSD School Finder — Curious Beginner Guide</span>
+    <span>For questions, contact your project team or visit sfusd.edu</span>
+  </footer>
+
+</div>
+</body>
+</html>
